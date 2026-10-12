@@ -110,7 +110,7 @@ tr.absent td{background:#ffecef;color:var(--rose);}
 <div class="container">
   <div class="tab-bar">
     <div class="tab-btn active" data-tab="dashboard" onclick="showPanel('dashboard')">Dashboard</div>
-    <div class="tab-btn" data-tab="participants" onclick="showPanel('participants')">Participants</div>
+    <div class="tab-btn" data-tab="participants" onclick="showPanel('participants');loadParticipantsList()">Participants</div>
     <div class="tab-btn" data-tab="search" onclick="showPanel('search')">Search</div>
     <div class="tab-btn" data-tab="actions" onclick="showPanel('actions')">Actions</div>
     <div class="tab-btn" data-tab="reports" onclick="showPanel('reports')">Reports</div>
@@ -669,15 +669,44 @@ async function doPrint(type) {
   if (!labels.length) { toast('No matching participants'); return; }
   const siteUrl = 'https://darconnecx-code.github.io/newdarmatch/?event=' + currentEventId;
   let html = '';
+  const qrSize = 150;
+  const labelStyle = 'width:58mm;padding:2mm 3mm;text-align:center;border:1px dashed #ccc;margin:0 auto;page-break-after:always;';
   if (type === 'qr') {
-    labels.forEach((l, i) => { html += '<div style="width:58mm;padding:1mm 2mm;text-align:center;border:1px dashed #ccc;margin:0 auto 2mm;page-break-after:always;"><div style="font-size:9pt;font-weight:bold;">DarMatch</div><div id="qr' + i + '" style="margin:1mm auto;"></div><div style="font-size:13pt;font-weight:bold;">' + l.id + '</div><div style="font-size:10pt;font-weight:bold;">' + l.name + '</div><div style="font-size:11pt;font-weight:bold;">Pass: <span style="font-family:monospace;">' + l.password + '</span></div></div>'; });
+    labels.forEach((l, i) => {
+      html += '<div style="' + labelStyle + '">';
+      html += '<div style="font-size:9pt;font-weight:bold;margin-bottom:1mm;">DarMatch</div>';
+      html += '<div id="qr' + i + '" style="margin:2mm auto;"></div>';
+      html += '<div style="font-size:14pt;font-weight:bold;margin-top:1mm;">' + l.id + '</div>';
+      html += '<div style="font-size:11pt;font-weight:bold;">' + l.name + '</div>';
+      html += '<div style="font-size:12pt;font-weight:bold;margin-top:1mm;">Pass: <span style="font-family:monospace;letter-spacing:1px;">' + l.password + '</span></div>';
+      html += '</div>';
+    });
   } else if (type === 'name') {
-    labels.forEach(l => { const fn = l.name.split(' ')[0]; html += '<div style="width:58mm;padding:2mm 3mm;text-align:center;border:1px dashed #ccc;margin:0 auto 2mm;page-break-after:always;"><div style="font-size:14pt;font-weight:bold;">' + l.id + ' - ' + fn + '</div>' + (l.age ? '<div style="font-size:10pt;font-weight:bold;">Age: ' + l.age + '</div>' : '') + '</div>'; });
+    labels.forEach(l => {
+      const fn = l.name.split(' ')[0];
+      html += '<div style="' + labelStyle + '">';
+      html += '<div style="font-size:16pt;font-weight:bold;">' + l.id + ' - ' + fn + '</div>';
+      if (l.age) html += '<div style="font-size:11pt;font-weight:bold;margin-top:1mm;">Age: ' + l.age + '</div>';
+      html += '</div>';
+    });
   } else {
-    labels.forEach((l, i) => { const fn = l.name.split(' ')[0]; html += '<div style="width:58mm;padding:2mm 3mm;text-align:center;border:1px dashed #ccc;margin:0 auto 2mm;page-break-after:always;"><div style="font-size:14pt;font-weight:bold;">' + l.id + ' - ' + fn + '</div>' + (l.age ? '<div style="font-size:10pt;font-weight:bold;">Age: ' + l.age + '</div>' : '') + '</div><div style="width:58mm;padding:1mm 2mm;text-align:center;border:1px dashed #ccc;margin:0 auto 2mm;page-break-after:always;"><div style="font-size:9pt;font-weight:bold;">DarMatch</div><div id="qr' + i + '" style="margin:1mm auto;"></div><div style="font-size:13pt;font-weight:bold;">' + l.id + '</div><div style="font-size:10pt;font-weight:bold;">' + l.name + '</div><div style="font-size:11pt;font-weight:bold;">Pass: <span style="font-family:monospace;">' + l.password + '</span></div></div>'; });
+    labels.forEach((l, i) => {
+      const fn = l.name.split(' ')[0];
+      html += '<div style="' + labelStyle + '">';
+      html += '<div style="font-size:16pt;font-weight:bold;">' + l.id + ' - ' + fn + '</div>';
+      if (l.age) html += '<div style="font-size:11pt;font-weight:bold;margin-top:1mm;">Age: ' + l.age + '</div>';
+      html += '</div>';
+      html += '<div style="' + labelStyle + '">';
+      html += '<div style="font-size:9pt;font-weight:bold;margin-bottom:1mm;">DarMatch</div>';
+      html += '<div id="qr' + i + '" style="margin:2mm auto;"></div>';
+      html += '<div style="font-size:14pt;font-weight:bold;margin-top:1mm;">' + l.id + '</div>';
+      html += '<div style="font-size:11pt;font-weight:bold;">' + l.name + '</div>';
+      html += '<div style="font-size:12pt;font-weight:bold;margin-top:1mm;">Pass: <span style="font-family:monospace;letter-spacing:1px;">' + l.password + '</span></div>';
+      html += '</div>';
+    });
   }
-  document.getElementById('printPreview').innerHTML = '<button class="btn btn-gold" onclick="window.print()" style="margin-bottom:10px;">Print</button>' + html;
-  if (type === 'qr' || type === 'nameqr') { labels.forEach((l, i) => { const el = document.getElementById('qr' + i); if (el) new QRCode(el, { text: siteUrl, width: 76, height: 76, colorDark: '#000', colorLight: '#fff', correctLevel: QRCode.CorrectLevel.M }); }); }
+  document.getElementById('printPreview').innerHTML = '<button class="btn btn-gold" onclick="window.print()" style="margin-bottom:10px;">Print</button><style>@media print{@page{margin:0;}body{margin:0;}}</style>' + html;
+  if (type === 'qr' || type === 'nameqr') { labels.forEach((l, i) => { const el = document.getElementById('qr' + i); if (el) new QRCode(el, { text: siteUrl, width: qrSize, height: qrSize, colorDark: '#000', colorLight: '#fff', correctLevel: QRCode.CorrectLevel.M }); }); }
 }
 </script>
 </body>
