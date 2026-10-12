@@ -359,16 +359,25 @@ async function createEvent() {
   const id = document.getElementById('newEventId').value.trim().toLowerCase().replace(/\s+/g, '-');
   const name = document.getElementById('newEventName').value.trim();
   if (!id) { toast('Event ID required'); return; }
-  const res = await api({ action: 'admin_createEvent', eventId: id, name: name || id });
-  if (res.success) {
-    currentEventId = id;
-    allParticipants = [];
-    document.getElementById('newEventId').value = '';
-    document.getElementById('newEventName').value = '';
-    await loadEvents();
-    toast('Event "' + (name || id) + '" created!');
-    showPanel('dashboard');
-  } else toast('Error: ' + res.error);
+  try {
+    console.log('Creating event:', id, name);
+    const url = API_URL + '?action=admin_createEvent&eventId=' + encodeURIComponent(id) + '&name=' + encodeURIComponent(name || id);
+    console.log('URL:', url);
+    const res = await fetch(url).then(r => r.json());
+    console.log('Response:', res);
+    if (res.success) {
+      currentEventId = id;
+      allParticipants = [];
+      document.getElementById('newEventId').value = '';
+      document.getElementById('newEventName').value = '';
+      await loadEvents();
+      toast('Event "' + (name || id) + '" created!');
+      showPanel('dashboard');
+    } else toast('Error: ' + res.error);
+  } catch(e) {
+    console.error('Create event failed:', e);
+    toast('Error: ' + e.message);
+  }
 }
 
 async function setEventStatus(status) {
