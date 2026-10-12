@@ -73,7 +73,7 @@ tr.absent td{background:#ffecef;color:var(--rose);}
 .tab-btn.active{color:var(--gold-dark);border-bottom-color:var(--gold);}
 .panel{display:none;}.panel.active{display:block;}
 @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
-@media print{.top-bar,.tab-bar,.grid,.btn,.event-controls{display:none!important;}.section{border:none;box-shadow:none;}}
+@media print{.top-bar,.tab-bar,.grid,.btn,.event-controls,.no-print,.section h2,.section .field,.section p,label{display:none!important;}.section{border:none;box-shadow:none;padding:0;}}
 @media(max-width:600px){.inline-fields{grid-template-columns:1fr;}.stat-card{min-width:70px;}.stat-card .num{font-size:18px;}}
 </style>
 </head>
@@ -196,8 +196,12 @@ tr.absent td{background:#ffecef;color:var(--rose);}
     <div class="section">
       <h2>Regenerate Password</h2>
       <div class="field"><label>Participant ID</label><input type="text" id="regenId" placeholder="e.g. F3"></div>
-      <button class="btn btn-gold" onclick="doRegenPassword()">Regenerate</button>
+      <button class="btn btn-gold" onclick="doRegenPassword()">Regenerate One</button>
       <div id="regenResult" style="margin-top:8px;font-size:13px;"></div>
+      <div style="margin-top:14px;padding-top:14px;border-top:1px solid #eee;">
+        <button class="btn btn-rose" onclick="doRegenAllPasswords()">Regenerate ALL Passwords</button>
+        <p style="font-size:11px;color:var(--rose);margin-top:4px;">This replaces every participant's password. Printed labels will have old passwords.</p>
+      </div>
     </div>
   </div>
 
@@ -592,6 +596,11 @@ async function doAddLateComer() {
     allParticipants = []; loadQuickStats();
   } else toast('Error: ' + res.error);
 }
+async function doRegenAllPasswords() {
+  if (!confirm('Regenerate ALL passwords?\n\nThis replaces every password. Any printed labels will have old passwords that no longer work.')) return;
+  const res = await api({ action: 'admin_regenAllPasswords' });
+  if (res.success) { toast(res.count + ' passwords regenerated'); allParticipants = []; } else toast('Error: ' + res.error);
+}
 async function doRegenPassword() {
   const id = document.getElementById('regenId').value.trim(); if (!id) { toast('Enter ID'); return; }
   const res = await api({ action: 'admin_regeneratePassword', id });
@@ -670,7 +679,7 @@ async function doPrint(type) {
   const siteUrl = 'https://darconnecx-code.github.io/newdarmatch/?event=' + currentEventId;
   let html = '';
   const qrSize = 150;
-  const labelStyle = 'width:58mm;padding:2mm 3mm;text-align:center;border:1px dashed #ccc;margin:0 auto;page-break-after:always;';
+  const labelStyle = 'width:48mm;padding:2mm 0mm;text-align:center;border:1px dashed #ccc;margin:0 auto;page-break-after:always;overflow:hidden;word-wrap:break-word;';
   if (type === 'qr') {
     labels.forEach((l, i) => {
       html += '<div style="' + labelStyle + '">';
