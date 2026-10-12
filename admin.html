@@ -16,124 +16,141 @@
 :root{--gold:#c9a84c;--gold-dark:#a07d2e;--ink:#1a1a2e;--ink-soft:#555;--green:#4a8c6f;--rose:#c4556e;--cream:#f8f6f1;--white:#fff;--radius:8px;}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'DM Sans',sans-serif;background:#f0ede6;color:var(--ink);min-height:100vh;}
-.top-bar{background:var(--ink);color:var(--white);padding:12px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:50;}
-.top-bar h1{font-size:18px;font-weight:700;}
-.top-bar select{padding:6px 12px;font-size:13px;border-radius:6px;border:none;background:var(--white);color:var(--ink);font-family:'DM Sans',sans-serif;}
-.top-bar .status-badge{padding:4px 12px;border-radius:12px;font-size:12px;font-weight:600;}
+.top-bar{background:var(--ink);color:var(--white);padding:10px 16px;position:sticky;top:0;z-index:50;}
+.top-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.top-bar h1{font-size:16px;font-weight:700;white-space:nowrap;}
+.top-bar select{padding:5px 10px;font-size:13px;border-radius:6px;border:none;background:var(--white);color:var(--ink);font-family:'DM Sans',sans-serif;}
+.status-badge{padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600;}
 .status-open{background:#c8e6c9;color:#2e6b3a;}
 .status-closed{background:#ffcdd2;color:#9b2c3e;}
-.container{max-width:1100px;margin:0 auto;padding:20px;}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:20px;}
-.action-card{background:var(--white);border-radius:var(--radius);padding:16px;cursor:pointer;text-align:center;border:1.5px solid #e8e4dc;transition:all .2s;}
+.event-controls{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;}
+.event-controls .btn{font-size:11px;padding:4px 10px;}
+.container{max-width:1100px;margin:0 auto;padding:16px;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:16px;}
+.action-card{background:var(--white);border-radius:var(--radius);padding:14px;cursor:pointer;text-align:center;border:1.5px solid #e8e4dc;transition:all .2s;}
 .action-card:hover{border-color:var(--gold);box-shadow:0 2px 12px rgba(0,0,0,.06);}
-.action-card .icon{font-size:24px;margin-bottom:6px;}
-.action-card .label{font-size:13px;font-weight:600;color:var(--ink);}
-.section{background:var(--white);border-radius:var(--radius);padding:20px;margin-bottom:16px;border:1px solid #e8e4dc;}
-.section h2{font-size:16px;font-weight:700;margin-bottom:12px;color:var(--ink);}
-.section h3{font-size:14px;font-weight:600;margin:16px 0 8px;color:var(--ink-soft);}
-.btn{padding:8px 18px;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:600;border:none;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;}
+.action-card .icon{font-size:22px;margin-bottom:4px;}
+.action-card .label{font-size:12px;font-weight:600;}
+.section{background:var(--white);border-radius:var(--radius);padding:18px;margin-bottom:14px;border:1px solid #e8e4dc;}
+.section h2{font-size:15px;font-weight:700;margin-bottom:10px;}
+.section h3{font-size:13px;font-weight:600;margin:14px 0 6px;color:var(--ink-soft);}
+.btn{padding:7px 16px;font-size:12px;font-family:'DM Sans',sans-serif;font-weight:600;border:none;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all .15s;}
 .btn-gold{background:var(--gold);color:var(--white);}.btn-gold:hover{background:var(--gold-dark);}
 .btn-green{background:var(--green);color:var(--white);}
 .btn-rose{background:var(--rose);color:var(--white);}
 .btn-outline{background:transparent;border:1.5px solid var(--gold);color:var(--gold-dark);}
-.btn-sm{padding:5px 12px;font-size:12px;}
-input[type=text],input[type=number],input[type=password],input[type=file],select,textarea{width:100%;padding:9px 12px;font-size:14px;font-family:'DM Sans',sans-serif;border:1.5px solid #ddd;border-radius:6px;margin-bottom:8px;}
+.btn-sm{padding:4px 10px;font-size:11px;}
+.btn:disabled{opacity:.5;cursor:not-allowed;}
+input[type=text],input[type=number],input[type=password],input[type=file],select,textarea{width:100%;padding:8px 10px;font-size:13px;font-family:'DM Sans',sans-serif;border:1.5px solid #ddd;border-radius:6px;margin-bottom:6px;}
 input:focus,textarea:focus{border-color:var(--gold);outline:none;}
-label{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px;}
-.field{margin-bottom:12px;}
-.stat-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;}
-.stat-card{background:var(--cream);border-radius:var(--radius);padding:12px;flex:1;min-width:100px;text-align:center;}
-.stat-card .num{font-size:26px;font-weight:700;color:var(--ink);}
-.stat-card .lbl{font-size:11px;color:var(--ink-soft);margin-top:2px;}
-table{width:100%;border-collapse:collapse;font-size:13px;}
-th{background:var(--cream);padding:8px 10px;text-align:left;font-weight:600;border-bottom:2px solid #ddd;}
-td{padding:7px 10px;border-bottom:1px solid #eee;}
+label{display:block;font-size:11px;font-weight:600;color:var(--ink-soft);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px;}
+.field{margin-bottom:10px;}
+.inline-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.stat-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.stat-card{background:var(--cream);border-radius:var(--radius);padding:10px;flex:1;min-width:85px;text-align:center;}
+.stat-card .num{font-size:22px;font-weight:700;}
+.stat-card .lbl{font-size:10px;color:var(--ink-soft);margin-top:2px;}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{background:var(--cream);padding:7px 8px;text-align:left;font-weight:600;border-bottom:2px solid #ddd;}
+td{padding:6px 8px;border-bottom:1px solid #eee;}
 tr:hover td{background:#faf8f4;}
 tr.absent td{background:#ffecef;color:var(--rose);}
-.toast{position:fixed;bottom:20px;right:20px;background:var(--ink);color:var(--white);padding:12px 20px;border-radius:8px;font-size:14px;z-index:200;display:none;animation:fadeIn .3s;}
-.chart-box{margin-top:12px;max-width:600px;}
-.search-result{background:var(--cream);border-radius:var(--radius);padding:14px;margin-bottom:10px;}
-.search-result h3{margin:0 0 8px;font-size:15px;}
-.search-row{display:flex;margin-bottom:3px;font-size:13px;}
-.search-lbl{width:100px;font-weight:600;color:var(--ink-soft);}
+.toast{position:fixed;bottom:20px;right:20px;background:var(--ink);color:var(--white);padding:10px 18px;border-radius:8px;font-size:13px;z-index:200;display:none;}
+.chart-box{margin-top:10px;max-width:600px;}
+.search-result{background:var(--cream);border-radius:var(--radius);padding:12px;margin-bottom:10px;}
+.search-result h3{margin:0 0 6px;font-size:14px;}
+.search-row{display:flex;margin-bottom:2px;font-size:12px;}
+.search-lbl{width:90px;font-weight:600;color:var(--ink-soft);}
 .search-val{flex:1;}
-.tag{display:inline-block;padding:3px 10px;background:var(--white);border:1px solid #ddd;border-radius:12px;font-size:12px;margin:2px;cursor:default;}
+.tag{display:inline-block;padding:2px 8px;background:var(--white);border:1px solid #ddd;border-radius:12px;font-size:11px;margin:2px;cursor:default;}
 .tag:hover{border-color:var(--gold);}
 .tooltip-wrap{position:relative;display:inline-block;}
-.tooltip-wrap .tip{display:none;position:absolute;bottom:100%;left:0;background:#333;color:#fff;padding:8px 12px;border-radius:6px;font-size:11px;z-index:100;margin-bottom:4px;white-space:nowrap;}
+.tooltip-wrap .tip{display:none;position:absolute;top:100%;left:0;background:#333;color:#fff;padding:8px 12px;border-radius:6px;font-size:11px;z-index:100;margin-top:4px;white-space:nowrap;}
 .tooltip-wrap .tip .trow{display:block;}
 .tooltip-wrap:hover .tip{display:block;}
-.hidden{display:none;}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
-@media print{.top-bar,.grid,.action-card,.btn{display:none!important;}.section{border:none;box-shadow:none;}}
-.tab-bar{display:flex;gap:0;border-bottom:2px solid #e8e4dc;margin-bottom:16px;}
-.tab-btn{padding:10px 20px;font-size:13px;font-weight:600;color:var(--ink-soft);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;}
+.tab-bar{display:flex;gap:0;border-bottom:2px solid #e8e4dc;margin-bottom:14px;overflow-x:auto;}
+.tab-btn{padding:8px 14px;font-size:12px;font-weight:600;color:var(--ink-soft);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;}
 .tab-btn.active{color:var(--gold-dark);border-bottom-color:var(--gold);}
 .panel{display:none;}.panel.active{display:block;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+@media print{.top-bar,.tab-bar,.grid,.btn,.event-controls{display:none!important;}.section{border:none;box-shadow:none;}}
+@media(max-width:600px){.inline-fields{grid-template-columns:1fr;}.stat-card{min-width:70px;}.stat-card .num{font-size:18px;}}
 </style>
 </head>
 <body>
 
-<!-- Admin Login Overlay -->
+<!-- Admin Login -->
 <div id="adminLoginOverlay" style="display:flex;position:fixed;top:0;left:0;right:0;bottom:0;background:var(--ink);z-index:300;align-items:center;justify-content:center;">
-  <div style="background:var(--white);border-radius:12px;padding:32px 28px;max-width:360px;width:90%;text-align:center;">
-    <div style="font-size:28px;margin-bottom:8px;">🔐</div>
-    <h2 style="font-size:20px;margin-bottom:4px;">DarMatch Admin</h2>
-    <p style="font-size:13px;color:var(--ink-soft);margin-bottom:20px;">Enter admin PIN to continue</p>
+  <div style="background:var(--white);border-radius:12px;padding:28px 24px;max-width:340px;width:90%;text-align:center;">
+    <div style="font-size:28px;margin-bottom:6px;">🔐</div>
+    <h2 style="font-size:18px;margin-bottom:4px;">DarMatch Admin</h2>
+    <p style="font-size:12px;color:var(--ink-soft);margin-bottom:16px;">Enter admin PIN to continue</p>
     <input type="password" id="adminPinInput" placeholder="Admin PIN" inputmode="numeric" style="text-align:center;font-size:18px;letter-spacing:4px;" onkeydown="if(event.key==='Enter')doAdminLogin()">
-    <div id="adminLoginError" style="font-size:13px;color:var(--rose);margin:8px 0;min-height:20px;"></div>
+    <div id="adminLoginError" style="font-size:12px;color:var(--rose);margin:6px 0;min-height:18px;"></div>
     <button class="btn btn-gold" style="width:100%;" onclick="doAdminLogin()">Sign In</button>
   </div>
 </div>
 
+<!-- Top Bar -->
 <div class="top-bar">
-  <h1>DarMatch Admin</h1>
-  <select id="eventSelect" onchange="switchEvent()"></select>
-  <span id="statusBadge" class="status-badge status-open">OPEN</span>
-  <button class="btn btn-sm btn-outline" style="color:#fff;border-color:#fff;margin-left:auto;" onclick="loadEvents()">↻ Refresh</button>
+  <div class="top-row">
+    <h1>DarMatch Admin</h1>
+    <select id="eventSelect" onchange="switchEvent()"></select>
+    <span id="statusBadge" class="status-badge status-open">OPEN</span>
+    <button class="btn btn-sm btn-outline" style="color:#fff;border-color:#666;margin-left:auto;" onclick="loadEvents()">↻</button>
+  </div>
+  <div class="event-controls" id="eventControls">
+    <button class="btn btn-sm btn-green" onclick="setEventStatus('OPEN')">Open</button>
+    <button class="btn btn-sm btn-rose" onclick="setEventStatus('CLOSED')">Close</button>
+    <button class="btn btn-sm btn-outline" style="color:#fff;border-color:#666;" onclick="promptCountdown()">⏱ Countdown</button>
+    <button class="btn btn-sm btn-outline" style="color:#fff;border-color:#666;" id="phoneVerifyBtn" onclick="togglePhoneVerify()">📱 Phone Off</button>
+  </div>
 </div>
 
 <div class="container">
-  <!-- Tab Bar -->
   <div class="tab-bar">
-    <div class="tab-btn active" onclick="showPanel('dashboard')">Dashboard</div>
-    <div class="tab-btn" onclick="showPanel('participants')">Participants</div>
-    <div class="tab-btn" onclick="showPanel('search')">Search</div>
-    <div class="tab-btn" onclick="showPanel('reports')">Reports</div>
-    <div class="tab-btn" onclick="showPanel('print')">Print</div>
-    <div class="tab-btn" onclick="showPanel('settings')">Settings</div>
+    <div class="tab-btn active" data-tab="dashboard" onclick="showPanel('dashboard')">Dashboard</div>
+    <div class="tab-btn" data-tab="participants" onclick="showPanel('participants')">Participants</div>
+    <div class="tab-btn" data-tab="search" onclick="showPanel('search')">Search</div>
+    <div class="tab-btn" data-tab="actions" onclick="showPanel('actions')">Actions</div>
+    <div class="tab-btn" data-tab="reports" onclick="showPanel('reports')">Reports</div>
+    <div class="tab-btn" data-tab="print" onclick="showPanel('print')">Print</div>
+    <div class="tab-btn" data-tab="settings" onclick="showPanel('settings')">Settings</div>
   </div>
 
-  <!-- DASHBOARD PANEL -->
+  <!-- DASHBOARD -->
   <div class="panel active" id="panelDashboard">
     <div class="grid">
-      <div class="action-card" onclick="showPanel('participants');loadParticipantsList()"><div class="icon">👥</div><div class="label">Participants</div></div>
+      <div class="action-card" onclick="showPanel('participants')"><div class="icon">👥</div><div class="label">Participants</div></div>
       <div class="action-card" onclick="showPanel('search')"><div class="icon">🔍</div><div class="label">Search</div></div>
-      <div class="action-card" onclick="showPanel('reports');loadStats()"><div class="icon">📊</div><div class="label">Stats & Charts</div></div>
-      <div class="action-card" onclick="showPanel('reports');loadMatches()"><div class="icon">💕</div><div class="label">Matches</div></div>
-      <div class="action-card" onclick="showPanel('print')"><div class="icon">🖨️</div><div class="label">Print Labels</div></div>
+      <div class="action-card" onclick="showPanel('actions')"><div class="icon">⚡</div><div class="label">Actions</div></div>
+      <div class="action-card" onclick="showPanel('reports');loadStats()"><div class="icon">📊</div><div class="label">Reports</div></div>
+      <div class="action-card" onclick="showPanel('print')"><div class="icon">🖨️</div><div class="label">Print</div></div>
       <div class="action-card" onclick="showPanel('settings')"><div class="icon">⚙️</div><div class="label">Settings</div></div>
     </div>
     <div id="quickStats"></div>
   </div>
 
-  <!-- PARTICIPANTS PANEL -->
+  <!-- PARTICIPANTS -->
   <div class="panel" id="panelParticipants">
     <div class="section">
       <h2>Load Participants from Excel</h2>
-      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Upload .xlsx with: Name, Gender?, Mobile number, Date of Birth. Optional: Ethnicity, Nationality, Occupation, Email. IDs auto-assigned.</p>
+      <p style="font-size:12px;color:var(--ink-soft);margin-bottom:10px;">Upload .xlsx: Name, Gender?, Mobile number, Date of Birth. Optional: Ethnicity, Nationality, Occupation, Email.</p>
       <input type="file" id="excelFile" accept=".xlsx,.xls,.csv">
-      <div id="excelPreview" style="font-size:12px;margin:8px 0;"></div>
+      <div id="excelPreview" style="font-size:11px;margin:6px 0;"></div>
       <button class="btn btn-gold" id="loadExcelBtn" onclick="doLoadExcel()" disabled>Load to Database</button>
     </div>
     <div class="section">
-      <h2>Participants List</h2>
-      <button class="btn btn-sm btn-outline" onclick="loadParticipantsList()" style="margin-bottom:12px;">↻ Refresh</button>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <h2 style="margin:0;">Participants List</h2>
+        <button class="btn btn-sm btn-outline" onclick="loadParticipantsList()">↻ Refresh</button>
+        <button class="btn btn-sm btn-green" onclick="exportExcel()">⬇ Export Excel</button>
+      </div>
       <div id="participantsList"></div>
     </div>
   </div>
 
-  <!-- SEARCH PANEL -->
+  <!-- SEARCH -->
   <div class="panel" id="panelSearch">
     <div class="section">
       <h2>Search Participant</h2>
@@ -142,24 +159,53 @@ tr.absent td{background:#ffecef;color:var(--rose);}
         <input type="text" id="searchInput" placeholder="M1, F2,M6, or Ahmed..." onkeydown="if(event.key==='Enter')doSearch()">
       </div>
       <button class="btn btn-gold" onclick="doSearch()">Search</button>
-      <div id="searchResults" style="margin-top:16px;"></div>
-    </div>
-    <div class="section">
-      <h2>Quick Actions</h2>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;">
-        <button class="btn btn-rose btn-sm" onclick="promptMarkAbsent()">Mark Absent</button>
-        <button class="btn btn-green btn-sm" onclick="promptMarkPresent()">Mark Present</button>
-        <button class="btn btn-gold btn-sm" onclick="promptAddLateComer()">Add Late Comer</button>
-        <button class="btn btn-outline btn-sm" onclick="promptRegenPassword()">Regenerate Password</button>
-      </div>
+      <div id="searchResults" style="margin-top:14px;"></div>
     </div>
   </div>
 
-  <!-- REPORTS PANEL -->
+  <!-- ACTIONS -->
+  <div class="panel" id="panelActions">
+    <div class="section">
+      <h2>Mark Absent</h2>
+      <div class="field"><label>Participant ID</label><input type="text" id="absentId" placeholder="e.g. M5"></div>
+      <button class="btn btn-rose" onclick="doMarkAbsent()">Mark Absent</button>
+    </div>
+    <div class="section">
+      <h2>Mark Present</h2>
+      <div class="field"><label>Participant ID</label><input type="text" id="presentId" placeholder="e.g. M5"></div>
+      <button class="btn btn-green" onclick="doMarkPresent()">Mark Present</button>
+    </div>
+    <div class="section">
+      <h2>Add Late Comer</h2>
+      <div class="inline-fields">
+        <div class="field"><label>Gender</label><select id="lcGender"><option value="M">Male</option><option value="F">Female</option></select></div>
+        <div class="field"><label>Name</label><input type="text" id="lcName" placeholder="Full name"></div>
+      </div>
+      <div class="inline-fields">
+        <div class="field"><label>Phone</label><input type="text" id="lcPhone" placeholder="07712345678"></div>
+        <div class="field"><label>Age</label><input type="number" id="lcAge" placeholder="28"></div>
+      </div>
+      <div class="inline-fields">
+        <div class="field"><label>Ethnicity</label><input type="text" id="lcEthnicity" placeholder="British Pakistani"></div>
+        <div class="field"><label>Nationality</label><input type="text" id="lcNationality" placeholder="British"></div>
+      </div>
+      <div class="field"><label>Occupation</label><input type="text" id="lcOccupation" placeholder="Engineer"></div>
+      <button class="btn btn-gold" onclick="doAddLateComer()">Add Late Comer</button>
+      <div id="lcResult" style="margin-top:8px;font-size:13px;"></div>
+    </div>
+    <div class="section">
+      <h2>Regenerate Password</h2>
+      <div class="field"><label>Participant ID</label><input type="text" id="regenId" placeholder="e.g. F3"></div>
+      <button class="btn btn-gold" onclick="doRegenPassword()">Regenerate</button>
+      <div id="regenResult" style="margin-top:8px;font-size:13px;"></div>
+    </div>
+  </div>
+
+  <!-- REPORTS -->
   <div class="panel" id="panelReports">
     <div class="section">
       <h2>Event Statistics</h2>
-      <button class="btn btn-sm btn-gold" onclick="loadStats()" style="margin-bottom:12px;">Load Stats</button>
+      <button class="btn btn-sm btn-gold" onclick="loadStats()" style="margin-bottom:10px;">Load Stats</button>
       <div id="statsContent"></div>
       <div class="chart-box"><canvas id="chartAge"></canvas></div>
       <div class="chart-box"><canvas id="chartDiff"></canvas></div>
@@ -167,16 +213,16 @@ tr.absent td{background:#ffecef;color:var(--rose);}
     <div class="section">
       <h2>Matches</h2>
       <button class="btn btn-sm btn-gold" onclick="loadMatches()">Find Matches</button>
-      <div id="matchesContent" style="margin-top:12px;"></div>
+      <div id="matchesContent" style="margin-top:10px;"></div>
     </div>
     <div class="section">
       <h2>Reveals</h2>
       <button class="btn btn-sm btn-gold" onclick="loadReveals()">Load Reveals</button>
-      <div id="revealsContent" style="margin-top:12px;"></div>
+      <div id="revealsContent" style="margin-top:10px;"></div>
     </div>
   </div>
 
-  <!-- PRINT PANEL -->
+  <!-- PRINT -->
   <div class="panel" id="panelPrint">
     <div class="section">
       <h2>Print Labels</h2>
@@ -184,7 +230,7 @@ tr.absent td{background:#ffecef;color:var(--rose);}
         <label>Enter ID, range, list, or ALL</label>
         <input type="text" id="printInput" placeholder="M3, M1-M10, F1,F5,M4-M6, ALL">
       </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">
         <button class="btn btn-gold" onclick="doPrint('qr')">QR Labels</button>
         <button class="btn btn-gold" onclick="doPrint('name')">Name Labels</button>
         <button class="btn btn-gold" onclick="doPrint('nameqr')">Name + QR</button>
@@ -193,51 +239,26 @@ tr.absent td{background:#ffecef;color:var(--rose);}
     </div>
   </div>
 
-  <!-- SETTINGS PANEL -->
+  <!-- SETTINGS -->
   <div class="panel" id="panelSettings">
     <div class="section">
-      <h2>Event Settings</h2>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
-        <button class="btn btn-green" onclick="setEventStatus('OPEN')">Open Event</button>
-        <button class="btn btn-rose" onclick="setEventStatus('CLOSED')">Close Event</button>
-      </div>
-      <div class="field">
-        <label>Countdown (YYYY-MM-DD HH:MM)</label>
-        <input type="text" id="countdownInput" placeholder="2026-12-15 18:00">
-      </div>
-      <div style="display:flex;gap:8px;margin-bottom:16px;">
-        <button class="btn btn-gold btn-sm" onclick="setCountdown()">Set Countdown</button>
-        <button class="btn btn-outline btn-sm" onclick="clearCountdown()">Clear Countdown</button>
-      </div>
-      <div style="display:flex;gap:8px;margin-bottom:16px;">
-        <button class="btn btn-gold btn-sm" onclick="setPhoneVerify(true)">Enable Phone Verification</button>
-        <button class="btn btn-outline btn-sm" onclick="setPhoneVerify(false)">Disable Phone Verification</button>
-      </div>
-    </div>
-    <div class="section">
       <h2>Create New Event</h2>
-      <div class="field">
-        <label>Event ID (lowercase, no spaces)</label>
-        <input type="text" id="newEventId" placeholder="london-june-2026">
-      </div>
-      <div class="field">
-        <label>Event Name</label>
-        <input type="text" id="newEventName" placeholder="London June 2026">
+      <div class="inline-fields">
+        <div class="field"><label>Event ID (lowercase, no spaces)</label><input type="text" id="newEventId" placeholder="london-june-2026"></div>
+        <div class="field"><label>Event Name</label><input type="text" id="newEventName" placeholder="London June 2026"></div>
       </div>
       <button class="btn btn-gold" onclick="createEvent()">Create Event</button>
     </div>
     <div class="section">
       <h2>Admin PIN</h2>
-      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">Set or change the admin PIN for this event.</p>
-      <div class="field">
-        <label>New Admin PIN (4+ characters)</label>
-        <input type="password" id="newPinInput" placeholder="Enter new PIN" inputmode="numeric">
-      </div>
+      <p style="font-size:12px;color:var(--ink-soft);margin-bottom:8px;">Set or change the admin PIN for this event.</p>
+      <div class="field"><label>New PIN (4+ characters)</label><input type="password" id="newPinInput" placeholder="Enter new PIN" inputmode="numeric"></div>
       <button class="btn btn-gold" onclick="setAdminPin()">Set PIN</button>
     </div>
     <div class="section">
       <h2>Danger Zone</h2>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <p style="font-size:12px;color:var(--rose);margin-bottom:10px;">These actions cannot be undone.</p>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
         <button class="btn btn-rose btn-sm" onclick="resetSelections()">Reset All Selections</button>
         <button class="btn btn-rose btn-sm" onclick="resetReveals()">Reset All Reveals</button>
         <button class="btn btn-gold btn-sm" onclick="genPasswords()">Generate Missing Passwords</button>
@@ -253,8 +274,8 @@ const API_URL = 'https://darmatch-api.darmatch.workers.dev';
 let currentEventId = '';
 let adminPin = '';
 let allParticipants = [];
-let chartAgeInstance = null;
-let chartDiffInstance = null;
+let chartAgeInstance = null, chartDiffInstance = null;
+let phoneVerifyOn = false;
 
 async function api(params) {
   params.eventId = currentEventId;
@@ -265,89 +286,53 @@ async function api(params) {
   return data;
 }
 
-function showAdminLogin() {
-  document.getElementById('adminLoginOverlay').style.display = 'flex';
-  document.getElementById('adminPinInput').value = '';
-  document.getElementById('adminPinInput').focus();
-}
-
-async function doAdminLogin() {
-  const pin = document.getElementById('adminPinInput').value.trim();
-  document.getElementById('adminLoginError').textContent = '';
-
-  // First check if any events exist
-  const evRes = await fetch(API_URL + '?action=admin_listEvents&eventId=').then(r => r.json());
-  if (!evRes.events || !evRes.events.length) {
-    // No events — skip auth, let them create one
-    adminPin = pin;
-    document.getElementById('adminLoginOverlay').style.display = 'none';
-    loadEvents();
-    return;
-  }
-
-  // Check if first event has a pin set
-  const firstEvent = evRes.events[0];
-  const loginRes = await fetch(API_URL + '?action=admin_login&eventId=' + firstEvent.id + '&adminPin=' + encodeURIComponent(pin)).then(r => r.json());
-
-  if (loginRes.success) {
-    adminPin = pin;
-    currentEventId = firstEvent.id;
-    document.getElementById('adminLoginOverlay').style.display = 'none';
-    loadEvents();
-  } else if (loginRes.needsPin === false) {
-    // No pin set — allow access
-    adminPin = '';
-    currentEventId = firstEvent.id;
-    document.getElementById('adminLoginOverlay').style.display = 'none';
-    loadEvents();
-  } else {
-    document.getElementById('adminLoginError').textContent = 'Invalid PIN. Try again.';
-  }
-}
-
-function toast(msg) {
-  const el = document.getElementById('toast');
-  el.textContent = msg; el.style.display = 'block';
-  setTimeout(() => el.style.display = 'none', 3000);
-}
+function toast(msg) { const el = document.getElementById('toast'); el.textContent = msg; el.style.display = 'block'; setTimeout(() => el.style.display = 'none', 3000); }
 
 function showPanel(name) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
   document.getElementById('panel' + name.charAt(0).toUpperCase() + name.slice(1)).classList.add('active');
-  document.querySelectorAll('.tab-btn').forEach(t => { if (t.textContent.toLowerCase().includes(name.toLowerCase().substring(0, 4))) t.classList.add('active'); });
+  document.querySelector('.tab-btn[data-tab="' + name + '"]').classList.add('active');
 }
 
-// --- Events ---
+// === AUTH ===
+function showAdminLogin() { document.getElementById('adminLoginOverlay').style.display = 'flex'; document.getElementById('adminPinInput').value = ''; document.getElementById('adminPinInput').focus(); }
+
+async function doAdminLogin() {
+  const pin = document.getElementById('adminPinInput').value.trim();
+  document.getElementById('adminLoginError').textContent = '';
+  const evRes = await fetch(API_URL + '?action=admin_listEvents&eventId=').then(r => r.json());
+  if (!evRes.events || !evRes.events.length) { adminPin = pin; document.getElementById('adminLoginOverlay').style.display = 'none'; loadEvents(); return; }
+  const firstEvent = evRes.events[0];
+  const loginRes = await fetch(API_URL + '?action=admin_login&eventId=' + firstEvent.id + '&adminPin=' + encodeURIComponent(pin)).then(r => r.json());
+  if (loginRes.success) { adminPin = pin; currentEventId = firstEvent.id; document.getElementById('adminLoginOverlay').style.display = 'none'; loadEvents(); }
+  else if (loginRes.needsPin === false) { adminPin = ''; currentEventId = firstEvent.id; document.getElementById('adminLoginOverlay').style.display = 'none'; loadEvents(); }
+  else { document.getElementById('adminLoginError').textContent = 'Invalid PIN.'; }
+}
+
+// === EVENTS ===
 async function loadEvents() {
   const res = await api({ action: 'admin_listEvents' });
-  const sel = document.getElementById('eventSelect');
-  sel.innerHTML = '';
+  const sel = document.getElementById('eventSelect'); sel.innerHTML = '';
   if (res.events && res.events.length) {
-    for (const e of res.events) {
-      const opt = document.createElement('option');
-      opt.value = e.id; opt.textContent = e.name + ' (' + e.status + ')';
-      sel.appendChild(opt);
-    }
+    for (const e of res.events) { const opt = document.createElement('option'); opt.value = e.id; opt.textContent = e.name; sel.appendChild(opt); }
     if (!currentEventId) currentEventId = res.events[0].id;
     sel.value = currentEventId;
-    updateStatusBadge(res.events.find(e => e.id === currentEventId));
+    const ev = res.events.find(e => e.id === currentEventId);
+    updateStatusBadge(ev);
     loadQuickStats();
-  } else {
-    sel.innerHTML = '<option>No events</option>';
   }
 }
 
-function switchEvent() {
-  currentEventId = document.getElementById('eventSelect').value;
-  loadEvents();
-}
+function switchEvent() { currentEventId = document.getElementById('eventSelect').value; allParticipants = []; loadEvents(); }
 
-function updateStatusBadge(event) {
+function updateStatusBadge(ev) {
+  if (!ev) return;
   const badge = document.getElementById('statusBadge');
-  if (!event) return;
-  badge.textContent = event.status + (event.phone_verify ? ' + Phone Verify' : '');
-  badge.className = 'status-badge ' + (event.status === 'OPEN' ? 'status-open' : 'status-closed');
+  badge.textContent = ev.status; badge.className = 'status-badge ' + (ev.status === 'OPEN' ? 'status-open' : 'status-closed');
+  phoneVerifyOn = !!ev.phone_verify;
+  document.getElementById('phoneVerifyBtn').textContent = phoneVerifyOn ? '📱 Phone On' : '📱 Phone Off';
+  document.getElementById('phoneVerifyBtn').style.background = phoneVerifyOn ? 'var(--gold)' : 'transparent';
 }
 
 async function createEvent() {
@@ -355,37 +340,47 @@ async function createEvent() {
   const name = document.getElementById('newEventName').value.trim();
   if (!id) { toast('Event ID required'); return; }
   const res = await api({ action: 'admin_createEvent', eventId: id, name: name || id });
-  if (res.success) { currentEventId = id; toast('Event created!'); loadEvents(); }
-  else toast('Error: ' + res.error);
+  if (res.success) { currentEventId = id; toast('Event created!'); loadEvents(); } else toast('Error: ' + res.error);
 }
 
-// --- Quick Stats ---
+async function setEventStatus(status) {
+  if (status === 'CLOSED' && !confirm('Close this event?')) return;
+  await api({ action: 'admin_setStatus', status }); toast('Event ' + status); loadEvents();
+}
+
+async function promptCountdown() {
+  const val = prompt('Set countdown (YYYY-MM-DD HH:MM):\n\nLeave empty to clear.');
+  if (val === null) return;
+  if (!val.trim()) { await api({ action: 'admin_setCountdown', countdown: '' }); toast('Countdown cleared'); return; }
+  const d = new Date(val); if (isNaN(d.getTime())) { toast('Invalid date'); return; }
+  await api({ action: 'admin_setCountdown', countdown: d.toISOString() }); toast('Countdown set!'); loadEvents();
+}
+
+async function togglePhoneVerify() {
+  phoneVerifyOn = !phoneVerifyOn;
+  await api({ action: 'admin_setPhoneVerify', enabled: phoneVerifyOn ? 'true' : 'false' });
+  toast('Phone verification ' + (phoneVerifyOn ? 'ON' : 'OFF')); loadEvents();
+}
+
+// === QUICK STATS ===
 async function loadQuickStats() {
-  const res = await api({ action: 'admin_getStats' });
-  if (!res.success) return;
+  const res = await api({ action: 'admin_getStats' }); if (!res.success) return;
   const s = res.stats;
   document.getElementById('quickStats').innerHTML =
     '<div class="stat-row">' +
     '<div class="stat-card"><div class="num">' + s.totalRegistered + '</div><div class="lbl">Total</div></div>' +
     '<div class="stat-card"><div class="num">' + s.totalActive + '</div><div class="lbl">Active</div></div>' +
-    '<div class="stat-card"><div class="num">' + s.maleCount + '</div><div class="lbl">Males (avg ' + s.avgMaleAge + ')</div></div>' +
-    '<div class="stat-card"><div class="num">' + s.femaleCount + '</div><div class="lbl">Females (avg ' + s.avgFemaleAge + ')</div></div>' +
+    '<div class="stat-card"><div class="num">' + s.maleCount + '</div><div class="lbl">Males</div></div>' +
+    '<div class="stat-card"><div class="num">' + s.femaleCount + '</div><div class="lbl">Females</div></div>' +
     '<div class="stat-card"><div class="num">' + s.totalAbsent + '</div><div class="lbl">Absent</div></div>' +
     '<div class="stat-card"><div class="num">' + s.matchCount + '</div><div class="lbl">Matches</div></div>' +
     '<div class="stat-card"><div class="num">' + s.matchPct + '%</div><div class="lbl">Matched</div></div>' +
     '<div class="stat-card"><div class="num">' + s.revealPct + '%</div><div class="lbl">Revealed</div></div>' +
-    '<div class="stat-card"><div class="num">' + s.exchangedPct + '%</div><div class="lbl">Exchanged</div></div>' +
-    '</div>';
+    '<div class="stat-card"><div class="num">' + s.exchangedPct + '%</div><div class="lbl">Exchanged</div></div></div>';
 }
 
-// --- Participants ---
-function excelDateToJS(v) {
-  if (!v) return null; var s = String(v).trim(); var num = Number(s);
-  if (!isNaN(num) && num > 1000 && num < 100000) return new Date((num - 25569) * 86400 * 1000);
-  var parts = s.split(/[\/\-\.]/);
-  if (parts.length === 3) { var d = parseInt(parts[0]), m = parseInt(parts[1]) - 1, y = parseInt(parts[2]); if (!isNaN(d) && !isNaN(m) && !isNaN(y)) return new Date(y, m, d); }
-  var d2 = new Date(s); return isNaN(d2.getTime()) ? null : d2;
-}
+// === PARTICIPANTS ===
+function excelDateToJS(v) { if (!v) return null; var s = String(v).trim(), num = Number(s); if (!isNaN(num) && num > 1000 && num < 100000) return new Date((num - 25569) * 86400 * 1000); var p = s.split(/[\/\-\.]/); if (p.length === 3) { var d = parseInt(p[0]), m = parseInt(p[1]) - 1, y = parseInt(p[2]); if (!isNaN(d) && !isNaN(m) && !isNaN(y)) return new Date(y, m, d); } var d2 = new Date(s); return isNaN(d2.getTime()) ? null : d2; }
 function calcAge(v) { var d = excelDateToJS(v); if (!d) return ''; var t = new Date(), a = t.getFullYear() - d.getFullYear(), m = t.getMonth() - d.getMonth(); if (m < 0 || (m === 0 && t.getDate() < d.getDate())) a--; return (a > 0 && a < 120) ? a : ''; }
 function findCol(r, keys) { for (var k of keys) { if (r[k] !== undefined && r[k] !== '') return String(r[k]).trim(); } return ''; }
 
@@ -396,32 +391,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const reader = new FileReader();
     reader.onload = function(e) {
       try {
-        const wb = XLSX.read(e.target.result, { type: 'binary' });
-        const ws = wb.Sheets[wb.SheetNames[0]];
+        const wb = XLSX.read(e.target.result, { type: 'binary' }), ws = wb.Sheets[wb.SheetNames[0]];
         const json = XLSX.utils.sheet_to_json(ws, { defval: '', raw: true });
-        if (!json.length) { document.getElementById('excelPreview').textContent = 'No data found.'; return; }
+        if (!json.length) { document.getElementById('excelPreview').textContent = 'No data.'; return; }
         const males = [], females = [], errors = [];
         for (let i = 0; i < json.length; i++) {
-          const r = json[i];
-          const name = findCol(r, ['Name', 'name', 'Full Name']);
-          const gender = findCol(r, ['Gender?', 'Gender', 'gender', 'Sex']).toLowerCase();
-          const phone = findCol(r, ['Mobile number', 'Mobile Number', 'mobile number', 'Phone', 'phone', 'Mobile', 'Tel', 'Telephone', 'Contact', 'Contact Number']);
-          const dobRaw = r['Date of Birth'] || r['DOB'] || r['Date of birth'] || '';
-          const age = calcAge(dobRaw);
-          const ethnicity = findCol(r, ['Ethnicity', 'ethnicity']);
-          const nationality = findCol(r, ['Nationality', 'nationality']);
-          const occupation = findCol(r, ['Occupation', 'occupation', 'Job', 'Profession']);
-          const email = findCol(r, ['Email', 'email', 'Email address', 'Email Address']);
+          const r = json[i], name = findCol(r, ['Name', 'name', 'Full Name']), gender = findCol(r, ['Gender?', 'Gender', 'gender', 'Sex']).toLowerCase();
+          const phone = findCol(r, ['Mobile number', 'Mobile Number', 'mobile number', 'Phone', 'phone', 'Mobile', 'Tel', 'Contact', 'Contact Number']);
+          const age = calcAge(r['Date of Birth'] || r['DOB'] || r['Date of birth'] || '');
+          const ethnicity = findCol(r, ['Ethnicity', 'ethnicity']), nationality = findCol(r, ['Nationality', 'nationality']);
+          const occupation = findCol(r, ['Occupation', 'occupation', 'Job', 'Profession']), email = findCol(r, ['Email', 'email', 'Email address']);
           if (!name) { errors.push('Row ' + (i + 2) + ': No name'); continue; }
-          if (!gender || !(gender.indexOf('m') === 0 || gender.indexOf('f') === 0)) { errors.push('Row ' + (i + 2) + ': ' + name + ' - unclear gender'); continue; }
+          if (!gender || !(gender.indexOf('m') === 0 || gender.indexOf('f') === 0)) { errors.push('Row ' + (i + 2) + ': ' + name + ' unclear gender'); continue; }
           const person = { name, phone, email, age, ethnicity, nationality, occupation };
           if (gender.indexOf('m') === 0) males.push(person); else females.push(person);
         }
         parsedExcel = [];
         males.forEach((p, i) => { p.id = 'M' + (i + 1); parsedExcel.push(p); });
         females.forEach((p, i) => { p.id = 'F' + (i + 1); parsedExcel.push(p); });
-        let msg = 'Found ' + parsedExcel.length + ' (' + males.length + 'M, ' + females.length + 'F)';
-        if (errors.length) msg += '\nWarnings: ' + errors.join(', ');
+        let msg = parsedExcel.length + ' participants (' + males.length + 'M, ' + females.length + 'F)';
+        if (errors.length) msg += ' | Warnings: ' + errors.join(', ');
         document.getElementById('excelPreview').textContent = msg;
         document.getElementById('loadExcelBtn').disabled = false;
       } catch (ex) { document.getElementById('excelPreview').textContent = 'Error: ' + ex; }
@@ -433,50 +422,120 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function doLoadExcel() {
   if (!parsedExcel || !parsedExcel.length) return;
-  document.getElementById('loadExcelBtn').disabled = true;
-  document.getElementById('loadExcelBtn').textContent = 'Loading...';
+  const btn = document.getElementById('loadExcelBtn'); btn.disabled = true; btn.textContent = 'Loading...';
   const res = await api({ action: 'admin_loadParticipants', data: JSON.stringify(parsedExcel) });
-  if (res.success) { toast(res.message); loadParticipantsList(); loadQuickStats(); }
-  else toast('Error: ' + res.error);
-  document.getElementById('loadExcelBtn').textContent = 'Load to Database';
-  document.getElementById('loadExcelBtn').disabled = false;
+  if (res.success) { toast(res.message); allParticipants = []; loadParticipantsList(); loadQuickStats(); } else toast('Error: ' + res.error);
+  btn.textContent = 'Load to Database'; btn.disabled = false;
 }
 
 async function loadParticipantsList() {
-  const res = await api({ action: 'admin_getParticipants' });
-  if (!res.success) return;
+  const res = await api({ action: 'admin_getParticipants' }); if (!res.success) return;
   allParticipants = res.participants;
-  let html = '<table><tr><th>ID</th><th>Name</th><th>Phone</th><th>Age</th><th>Status</th><th>Selections</th><th>Password</th></tr>';
-  for (const p of res.participants) {
+  if (!allParticipants.length) { document.getElementById('participantsList').innerHTML = '<p style="color:var(--ink-soft);">No participants. Upload an Excel file.</p>'; return; }
+  let html = '<table><tr><th>ID</th><th>Name</th><th>Phone</th><th>Age</th><th>Ethnicity</th><th>Status</th><th>Sel</th><th>Pass</th></tr>';
+  for (const p of allParticipants) {
     const cls = p.status === 'absent' ? ' class="absent"' : '';
     const selCount = p.selections ? p.selections.split(',').filter(s => s.trim()).length : 0;
-    html += '<tr' + cls + '><td><b>' + p.participant_id + '</b></td><td>' + p.name + '</td><td>' + p.phone + '</td><td>' + (p.age || '') + '</td><td>' + (p.status || 'active') + '</td><td>' + (selCount ? selCount + ' selected' : '-') + '</td><td>' + p.password + '</td></tr>';
+    html += '<tr' + cls + '><td><b>' + p.participant_id + '</b></td><td>' + p.name + '</td><td>' + (p.phone || '') + '</td><td>' + (p.age || '') + '</td><td>' + (p.ethnicity || '') + '</td><td>' + (p.status || 'active') + '</td><td>' + (selCount || '-') + '</td><td>' + p.password + '</td></tr>';
   }
   html += '</table>';
   document.getElementById('participantsList').innerHTML = html;
 }
 
-// --- Search ---
-async function doSearch() {
-  const q = document.getElementById('searchInput').value.trim();
-  if (!q) return;
-  const res = await api({ action: 'admin_search', query: q });
-  if (!res.success || !res.results.length) {
-    document.getElementById('searchResults').innerHTML = '<p style="color:var(--rose);">No results found.</p>';
-    return;
-  }
-  // Get all participants for tooltip data
-  if (!allParticipants.length) {
-    const pRes = await api({ action: 'admin_getParticipants' });
-    if (pRes.success) allParticipants = pRes.participants;
-  }
-  const pMap = {};
-  for (const p of allParticipants) pMap[p.participant_id.toUpperCase()] = p;
+async function exportExcel() {
+  toast('Preparing export...');
+  if (!allParticipants.length) { const r = await api({ action: 'admin_getParticipants' }); if (r.success) allParticipants = r.participants; }
+  if (!allParticipants.length) { toast('No participants to export'); return; }
 
+  const wb = XLSX.utils.book_new();
+
+  // Sheet 1: Participants
+  const pData = allParticipants.map(p => {
+    const selCount = p.selections ? p.selections.split(',').filter(s => s.trim()).length : 0;
+    return { 'ID': p.participant_id, 'Name': p.name, 'Phone': p.phone || '', 'Email': p.email || '',
+      'Age': p.age || '', 'Ethnicity': p.ethnicity || '', 'Nationality': p.nationality || '',
+      'Occupation': p.occupation || '', 'Status': p.status || 'active',
+      'Selections': p.selections || '', 'Selection Count': selCount,
+      'Password': p.password, 'T&C Accepted': p.tc_accepted ? 'Yes' : 'No' };
+  });
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(pData), 'Participants');
+
+  // Sheet 2: Matches
+  const matchRes = await api({ action: 'admin_getMatches' });
+  if (matchRes.success && matchRes.matches.length) {
+    const mData = matchRes.matches.map((m, i) => ({ '#': i + 1, 'Person A': m.a, 'Name A': m.nameA, 'Person B': m.b, 'Name B': m.nameB, 'Strength': m.strength }));
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(mData), 'Matches');
+  } else {
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet([{ 'Info': 'No matches found' }]), 'Matches');
+  }
+
+  // Sheet 3: Reveals
+  const revRes = await api({ action: 'admin_getReveals' });
+  if (revRes.success && revRes.reveals.length) {
+    const rData = revRes.reveals.map(r => ({ 'Person A': r.personA, 'Person B': r.personB, 'Status': r.full ? 'BOTH REVEALED' : 'Partial: ' + r.agreedBy.join(', '), 'Agreed By': r.agreedBy.join(', ') }));
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(rData), 'Reveals');
+  } else {
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet([{ 'Info': 'No reveals' }]), 'Reveals');
+  }
+
+  // Sheet 4: Stats
+  const statsRes = await api({ action: 'admin_getStats' });
+  if (statsRes.success) {
+    const s = statsRes.stats;
+    const sData = [
+      { 'Metric': 'Total Registered', 'Value': s.totalRegistered },
+      { 'Metric': 'Active Participants', 'Value': s.totalActive },
+      { 'Metric': 'Males', 'Value': s.maleCount, 'Detail': 'Avg age: ' + s.avgMaleAge },
+      { 'Metric': 'Females', 'Value': s.femaleCount, 'Detail': 'Avg age: ' + s.avgFemaleAge },
+      { 'Metric': 'Absent', 'Value': s.totalAbsent, 'Detail': s.absentM + 'M, ' + s.absentF + 'F' },
+      { 'Metric': 'Mutual Matches', 'Value': s.matchCount },
+      { 'Metric': 'Match %', 'Value': s.matchPct + '%', 'Detail': s.matchedCount + ' of ' + s.totalActive },
+      { 'Metric': 'Reveal %', 'Value': s.revealPct + '%', 'Detail': s.fullReveals + ' of ' + s.matchCount },
+      { 'Metric': 'Exchanged %', 'Value': s.exchangedPct + '%', 'Detail': s.uniqueRevealCount + ' of ' + s.totalActive },
+      { 'Metric': '' }, { 'Metric': 'AGE DISTRIBUTION', 'Value': 'Males', 'Detail': 'Females' },
+      { 'Metric': '18-22', 'Value': s.maleBrackets['18-22'] || 0, 'Detail': s.femaleBrackets['18-22'] || 0 },
+      { 'Metric': '23-27', 'Value': s.maleBrackets['23-27'] || 0, 'Detail': s.femaleBrackets['23-27'] || 0 },
+      { 'Metric': '28-32', 'Value': s.maleBrackets['28-32'] || 0, 'Detail': s.femaleBrackets['28-32'] || 0 },
+      { 'Metric': '33-37', 'Value': s.maleBrackets['33-37'] || 0, 'Detail': s.femaleBrackets['33-37'] || 0 },
+      { 'Metric': '38-42', 'Value': s.maleBrackets['38-42'] || 0, 'Detail': s.femaleBrackets['38-42'] || 0 },
+      { 'Metric': '43+', 'Value': s.maleBrackets['43+'] || 0, 'Detail': s.femaleBrackets['43+'] || 0 },
+      { 'Metric': '' }, { 'Metric': 'MATCH AGE DIFFERENCE', 'Value': 'Pairs' },
+      { 'Metric': '0-2 years', 'Value': s.matchDiffBrackets['0-2'] || 0 },
+      { 'Metric': '3-5 years', 'Value': s.matchDiffBrackets['3-5'] || 0 },
+      { 'Metric': '6-8 years', 'Value': s.matchDiffBrackets['6-8'] || 0 },
+      { 'Metric': '9-11 years', 'Value': s.matchDiffBrackets['9-11'] || 0 },
+      { 'Metric': '12+ years', 'Value': s.matchDiffBrackets['12+'] || 0 },
+      { 'Metric': '' }, { 'Metric': 'TOP SELECTED MALES' },
+    ];
+    for (let i = 0; i < Math.min(s.topMales.length, 10); i++) { sData.push({ 'Metric': (i + 1) + '. ' + s.topMales[i].id + ' ' + s.topMales[i].name, 'Value': s.topMales[i].count }); }
+    sData.push({ 'Metric': '' }, { 'Metric': 'TOP SELECTED FEMALES' });
+    for (let i = 0; i < Math.min(s.topFemales.length, 10); i++) { sData.push({ 'Metric': (i + 1) + '. ' + s.topFemales[i].id + ' ' + s.topFemales[i].name, 'Value': s.topFemales[i].count }); }
+    sData.push({ 'Metric': '' }, { 'Metric': 'LEGEND' },
+      { 'Metric': 'Total', 'Value': 'All registered participants' },
+      { 'Metric': 'Active', 'Value': 'Total minus absent' },
+      { 'Metric': 'Matches', 'Value': 'Mutual match pairs (both selected each other)' },
+      { 'Metric': 'Match %', 'Value': 'People with at least one mutual match' },
+      { 'Metric': 'Reveal %', 'Value': 'Pairs who both shared phone numbers' },
+      { 'Metric': 'Exchanged %', 'Value': 'Unique people who shared with 1+ match' },
+      { 'Metric': 'Age Diff', 'Value': 'Absolute age gap between matched pairs' }
+    );
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(sData), 'Stats');
+  }
+
+  XLSX.writeFile(wb, 'DarMatch_' + currentEventId + '_' + new Date().toISOString().slice(0, 10) + '.xlsx');
+  toast('Exported!');
+}
+
+// === SEARCH ===
+async function doSearch() {
+  const q = document.getElementById('searchInput').value.trim(); if (!q) return;
+  const res = await api({ action: 'admin_search', query: q });
+  if (!res.success || !res.results.length) { document.getElementById('searchResults').innerHTML = '<p style="color:var(--rose);">No results.</p>'; return; }
+  if (!allParticipants.length) { const pRes = await api({ action: 'admin_getParticipants' }); if (pRes.success) allParticipants = pRes.participants; }
+  const pMap = {}; for (const p of allParticipants) pMap[p.participant_id.toUpperCase()] = p;
   let html = '';
   for (const p of res.results) {
-    html += '<div class="search-result">';
-    html += '<h3>' + p.participant_id + ' — ' + p.name + '</h3>';
+    html += '<div class="search-result"><h3>' + p.participant_id + ' — ' + p.name + '</h3>';
     html += '<div class="search-row"><span class="search-lbl">Age</span><span class="search-val">' + (p.age || '-') + '</span></div>';
     html += '<div class="search-row"><span class="search-lbl">Phone</span><span class="search-val">' + (p.phone || '-') + '</span></div>';
     html += '<div class="search-row"><span class="search-lbl">Email</span><span class="search-val">' + (p.email || '-') + '</span></div>';
@@ -485,86 +544,65 @@ async function doSearch() {
     html += '<div class="search-row"><span class="search-lbl">Occupation</span><span class="search-val">' + (p.occupation || '-') + '</span></div>';
     html += '<div class="search-row"><span class="search-lbl">Password</span><span class="search-val">' + p.password + '</span></div>';
     html += '<div class="search-row"><span class="search-lbl">Status</span><span class="search-val">' + (p.status || 'active') + '</span></div>';
-    html += '<div class="search-row"><span class="search-lbl">T&C</span><span class="search-val">' + (p.tc_accepted ? 'Accepted' : 'Not accepted') + '</span></div>';
-
-    // Selections with tooltips
+    html += '<div class="search-row"><span class="search-lbl">T&C</span><span class="search-val">' + (p.tc_accepted ? 'Accepted' : 'No') + '</span></div>';
     const sels = p.selections ? p.selections.split(',').map(s => s.trim().toUpperCase()).filter(s => s) : [];
-    html += '<h3>Selections (' + sels.length + ')</h3><div>';
-    for (const sid of sels) { html += makeTooltipTag(sid, pMap); }
-    if (!sels.length) html += '<span style="color:var(--ink-soft);font-size:12px;">(none)</span>';
-    html += '</div>';
-
-    // Selected by
+    html += '<h3>Selections (' + sels.length + ')</h3><div>'; for (const sid of sels) html += makeTooltipTag(sid, pMap);
+    if (!sels.length) html += '<span style="color:var(--ink-soft);font-size:11px;">(none)</span>'; html += '</div>';
     html += '<h3>Selected by (' + (p.selectedBy ? p.selectedBy.length : 0) + ')</h3><div>';
-    if (p.selectedBy && p.selectedBy.length) { for (const sid of p.selectedBy) { html += makeTooltipTag(sid, pMap); } }
-    else html += '<span style="color:var(--ink-soft);font-size:12px;">(nobody)</span>';
-    html += '</div>';
-
-    // Matches
+    if (p.selectedBy && p.selectedBy.length) { for (const sid of p.selectedBy) html += makeTooltipTag(sid, pMap); }
+    else html += '<span style="color:var(--ink-soft);font-size:11px;">(nobody)</span>'; html += '</div>';
     html += '<h3>Matches (' + (p.matches ? p.matches.length : 0) + ')</h3><div>';
-    if (p.matches && p.matches.length) {
-      for (const m of p.matches) {
-        const label = m.id + (m.revealed ? ' [REVEALED]' : m.partial ? ' [partial]' : '');
-        html += makeTooltipTag(m.id, pMap, label);
-      }
-    } else html += '<span style="color:var(--ink-soft);font-size:12px;">(none)</span>';
-    html += '</div></div>';
+    if (p.matches && p.matches.length) { for (const m of p.matches) html += makeTooltipTag(m.id, pMap, m.id + (m.revealed ? ' ✓REVEALED' : m.partial ? ' ⏳partial' : '')); }
+    else html += '<span style="color:var(--ink-soft);font-size:11px;">(none)</span>'; html += '</div></div>';
   }
   document.getElementById('searchResults').innerHTML = html;
 }
 
 function makeTooltipTag(id, pMap, labelOverride) {
-  const p = pMap[id.toUpperCase()];
-  if (!p) return '<span class="tag">' + (labelOverride || id) + '</span>';
-  const fn = p.name.split(' ')[0];
+  const p = pMap[id.toUpperCase()]; if (!p) return '<span class="tag">' + (labelOverride || id) + '</span>';
   return '<span class="tooltip-wrap"><span class="tag">' + (labelOverride || id) + '</span><span class="tip">' +
-    '<span class="trow">' + p.name + '</span>' +
-    '<span class="trow">Age: ' + (p.age || '-') + '</span>' +
-    '<span class="trow">' + (p.ethnicity || '-') + '</span>' +
-    '<span class="trow">' + (p.nationality || '-') + '</span>' +
-    '<span class="trow">' + (p.occupation || '-') + '</span>' +
-    '</span></span>';
+    '<span class="trow">' + p.name + '</span><span class="trow">Age: ' + (p.age || '-') + '</span>' +
+    '<span class="trow">' + (p.ethnicity || '-') + '</span><span class="trow">' + (p.nationality || '-') + '</span>' +
+    '<span class="trow">' + (p.occupation || '-') + '</span></span></span>';
 }
 
-// --- Quick Actions ---
-async function promptMarkAbsent() {
-  const id = prompt('Mark Absent — Enter participant ID:');
-  if (!id) return;
-  const res = await api({ action: 'admin_markAbsent', id: id.trim() });
-  toast(res.message || res.error);
-  loadParticipantsList(); loadQuickStats();
+// === ACTIONS ===
+async function doMarkAbsent() {
+  const id = document.getElementById('absentId').value.trim(); if (!id) { toast('Enter ID'); return; }
+  const res = await api({ action: 'admin_markAbsent', id }); toast(res.message || res.error);
+  document.getElementById('absentId').value = ''; allParticipants = []; loadQuickStats();
 }
-async function promptMarkPresent() {
-  const id = prompt('Mark Present — Enter participant ID:');
-  if (!id) return;
-  const res = await api({ action: 'admin_markPresent', id: id.trim() });
-  toast(res.message || res.error);
-  loadParticipantsList(); loadQuickStats();
+async function doMarkPresent() {
+  const id = document.getElementById('presentId').value.trim(); if (!id) { toast('Enter ID'); return; }
+  const res = await api({ action: 'admin_markPresent', id }); toast(res.message || res.error);
+  document.getElementById('presentId').value = ''; allParticipants = []; loadQuickStats();
 }
-async function promptAddLateComer() {
-  const gender = confirm('Is the late comer Male?\n\nOK = Male, Cancel = Female') ? 'M' : 'F';
-  const name = prompt('Name:'); if (!name) return;
-  const phone = prompt('Phone:'); if (phone === null) return;
-  const age = prompt('Age:'); if (age === null) return;
-  const res = await api({ action: 'admin_addLateComer', gender, name, phone, age });
-  if (res.success) toast('Added ' + res.id + ' — Password: ' + res.password);
-  else toast('Error: ' + res.error);
-  loadParticipantsList(); loadQuickStats();
+async function doAddLateComer() {
+  const gender = document.getElementById('lcGender').value;
+  const name = document.getElementById('lcName').value.trim(); if (!name) { toast('Name required'); return; }
+  const phone = document.getElementById('lcPhone').value.trim();
+  const age = document.getElementById('lcAge').value.trim();
+  const ethnicity = document.getElementById('lcEthnicity').value.trim();
+  const nationality = document.getElementById('lcNationality').value.trim();
+  const occupation = document.getElementById('lcOccupation').value.trim();
+  const res = await api({ action: 'admin_addLateComer', gender, name, phone, age, ethnicity, nationality, occupation });
+  if (res.success) {
+    document.getElementById('lcResult').innerHTML = '<b style="color:var(--green);">' + res.id + '</b> added — Password: <b>' + res.password + '</b>';
+    ['lcName','lcPhone','lcAge','lcEthnicity','lcNationality','lcOccupation'].forEach(id => document.getElementById(id).value = '');
+    allParticipants = []; loadQuickStats();
+  } else toast('Error: ' + res.error);
 }
-async function promptRegenPassword() {
-  const id = prompt('Regenerate password for ID:');
-  if (!id) return;
-  const res = await api({ action: 'admin_regeneratePassword', id: id.trim() });
-  if (res.success) toast(res.id + ' → ' + res.password);
+async function doRegenPassword() {
+  const id = document.getElementById('regenId').value.trim(); if (!id) { toast('Enter ID'); return; }
+  const res = await api({ action: 'admin_regeneratePassword', id });
+  if (res.success) document.getElementById('regenResult').innerHTML = '<b>' + res.id + '</b> → <b>' + res.password + '</b>';
   else toast('Error: ' + res.error);
 }
 
-// --- Reports ---
+// === REPORTS ===
 async function loadStats() {
-  const res = await api({ action: 'admin_getStats' });
-  if (!res.success) return;
+  const res = await api({ action: 'admin_getStats' }); if (!res.success) return;
   const s = res.stats;
-
   let html = '<div class="stat-row">' +
     '<div class="stat-card"><div class="num">' + s.totalRegistered + '</div><div class="lbl">Total</div></div>' +
     '<div class="stat-card"><div class="num">' + s.totalActive + '</div><div class="lbl">Active</div></div>' +
@@ -574,214 +612,73 @@ async function loadStats() {
     '<div class="stat-card"><div class="num">' + s.matchCount + '</div><div class="lbl">Matches</div></div>' +
     '<div class="stat-card"><div class="num">' + s.matchPct + '%</div><div class="lbl">Matched (' + s.matchedCount + '/' + s.totalActive + ')</div></div>' +
     '<div class="stat-card"><div class="num">' + s.revealPct + '%</div><div class="lbl">Revealed (' + s.fullReveals + '/' + s.matchCount + ')</div></div>' +
-    '<div class="stat-card"><div class="num">' + s.exchangedPct + '%</div><div class="lbl">Exchanged (' + s.uniqueRevealCount + '/' + s.totalActive + ')</div></div>' +
-    '</div>';
-
-  // Top selected
-  html += '<div style="display:flex;gap:16px;flex-wrap:wrap;">';
-  html += '<div style="flex:1;min-width:200px;"><h3>Most Selected Males</h3>';
-  for (let i = 0; i < Math.min(s.topMales.length, 10); i++) {
-    const t = s.topMales[i]; html += '<div style="font-size:13px;padding:4px 0;border-bottom:1px solid #eee;"><b>' + (i + 1) + '.</b> ' + t.id + ' — ' + t.name.split(' ')[0] + ' <b>' + t.count + '</b></div>';
-  }
-  html += '</div>';
-  html += '<div style="flex:1;min-width:200px;"><h3>Most Selected Females</h3>';
-  for (let i = 0; i < Math.min(s.topFemales.length, 10); i++) {
-    const t = s.topFemales[i]; html += '<div style="font-size:13px;padding:4px 0;border-bottom:1px solid #eee;"><b>' + (i + 1) + '.</b> ' + t.id + ' — ' + t.name.split(' ')[0] + ' <b>' + t.count + '</b></div>';
-  }
+    '<div class="stat-card"><div class="num">' + s.exchangedPct + '%</div><div class="lbl">Exchanged (' + s.uniqueRevealCount + '/' + s.totalActive + ')</div></div></div>';
+  html += '<div style="display:flex;gap:14px;flex-wrap:wrap;">';
+  html += '<div style="flex:1;min-width:180px;"><h3>Most Selected Males</h3>';
+  for (let i = 0; i < Math.min(s.topMales.length, 10); i++) { const t = s.topMales[i]; html += '<div style="font-size:12px;padding:3px 0;border-bottom:1px solid #eee;"><b>' + (i + 1) + '.</b> ' + t.id + ' ' + t.name.split(' ')[0] + ' <b>' + t.count + '</b></div>'; }
+  html += '</div><div style="flex:1;min-width:180px;"><h3>Most Selected Females</h3>';
+  for (let i = 0; i < Math.min(s.topFemales.length, 10); i++) { const t = s.topFemales[i]; html += '<div style="font-size:12px;padding:3px 0;border-bottom:1px solid #eee;"><b>' + (i + 1) + '.</b> ' + t.id + ' ' + t.name.split(' ')[0] + ' <b>' + t.count + '</b></div>'; }
   html += '</div></div>';
   document.getElementById('statsContent').innerHTML = html;
-
-  // Charts
   const labels = ['18-22', '23-27', '28-32', '33-37', '38-42', '43+'];
   if (chartAgeInstance) chartAgeInstance.destroy();
-  chartAgeInstance = new Chart(document.getElementById('chartAge'), {
-    type: 'bar', data: { labels, datasets: [
-      { label: 'Males', data: labels.map(l => s.maleBrackets[l] || 0), backgroundColor: '#333' },
-      { label: 'Females', data: labels.map(l => s.femaleBrackets[l] || 0), backgroundColor: '#999' }
-    ]}, options: { responsive: true, plugins: { legend: { labels: { font: { weight: 'bold' } } } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
-  });
-
-  const diffLabels = ['0-2', '3-5', '6-8', '9-11', '12+'];
+  chartAgeInstance = new Chart(document.getElementById('chartAge'), { type: 'bar', data: { labels, datasets: [{ label: 'Males', data: labels.map(l => s.maleBrackets[l] || 0), backgroundColor: '#333' }, { label: 'Females', data: labels.map(l => s.femaleBrackets[l] || 0), backgroundColor: '#999' }] }, options: { responsive: true, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } } });
+  const dl = ['0-2', '3-5', '6-8', '9-11', '12+'];
   if (chartDiffInstance) chartDiffInstance.destroy();
-  chartDiffInstance = new Chart(document.getElementById('chartDiff'), {
-    type: 'bar', data: { labels: diffLabels, datasets: [
-      { label: 'Match Age Difference', data: diffLabels.map(l => s.matchDiffBrackets[l] || 0), backgroundColor: '#555' }
-    ]}, options: { responsive: true, plugins: { legend: { labels: { font: { weight: 'bold' } } } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
-  });
+  chartDiffInstance = new Chart(document.getElementById('chartDiff'), { type: 'bar', data: { labels: dl, datasets: [{ label: 'Match Age Difference', data: dl.map(l => s.matchDiffBrackets[l] || 0), backgroundColor: '#555' }] }, options: { responsive: true, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } } });
 }
 
 async function loadMatches() {
-  const res = await api({ action: 'admin_getMatches' });
-  if (!res.success) return;
+  const res = await api({ action: 'admin_getMatches' }); if (!res.success) return;
   if (!res.matches.length) { document.getElementById('matchesContent').innerHTML = '<p>No matches.</p>'; return; }
   let html = '<table><tr><th>#</th><th>Person A</th><th>Person B</th><th>Strength</th></tr>';
-  res.matches.forEach((m, i) => {
-    const bg = m.strength <= 4 ? ' style="background:#e8f5e9;"' : '';
-    html += '<tr' + bg + '><td>' + (i + 1) + '</td><td>' + m.a + ' — ' + m.nameA + '</td><td>' + m.b + ' — ' + m.nameB + '</td><td>' + m.strength + '</td></tr>';
-  });
+  res.matches.forEach((m, i) => { html += '<tr' + (m.strength <= 4 ? ' style="background:#e8f5e9;"' : '') + '><td>' + (i + 1) + '</td><td>' + m.a + ' — ' + m.nameA + '</td><td>' + m.b + ' — ' + m.nameB + '</td><td>' + m.strength + '</td></tr>'; });
   html += '</table>';
   document.getElementById('matchesContent').innerHTML = html;
 }
 
 async function loadReveals() {
-  const res = await api({ action: 'admin_getReveals' });
-  if (!res.success) return;
+  const res = await api({ action: 'admin_getReveals' }); if (!res.success) return;
   if (!res.reveals.length) { document.getElementById('revealsContent').innerHTML = '<p>No reveals.</p>'; return; }
   let html = '<table><tr><th>Person A</th><th>Person B</th><th>Status</th></tr>';
-  for (const r of res.reveals) {
-    html += '<tr><td>' + r.personA + '</td><td>' + r.personB + '</td><td>' + (r.full ? '✓ BOTH' : 'Partial: ' + r.agreedBy.join(', ')) + '</td></tr>';
-  }
+  for (const r of res.reveals) html += '<tr><td>' + r.personA + '</td><td>' + r.personB + '</td><td>' + (r.full ? '✓ BOTH' : 'Partial: ' + r.agreedBy.join(', ')) + '</td></tr>';
   html += '</table>';
   document.getElementById('revealsContent').innerHTML = html;
 }
 
-// --- Settings ---
-async function setEventStatus(status) {
-  if (status === 'CLOSED' && !confirm('Close event? Participants will see "Event Closed".')) return;
-  const res = await api({ action: 'admin_setStatus', status });
-  toast('Event ' + status); loadEvents();
-}
-async function setCountdown() {
-  const val = document.getElementById('countdownInput').value.trim();
-  if (!val) { toast('Enter a date'); return; }
-  const d = new Date(val);
-  if (isNaN(d.getTime())) { toast('Invalid date'); return; }
-  await api({ action: 'admin_setCountdown', countdown: d.toISOString() });
-  toast('Countdown set!'); loadEvents();
-}
-async function clearCountdown() {
-  await api({ action: 'admin_setCountdown', countdown: '' });
-  toast('Countdown cleared'); loadEvents();
-}
-async function setPhoneVerify(on) {
-  await api({ action: 'admin_setPhoneVerify', enabled: on ? 'true' : 'false' });
-  toast('Phone verification ' + (on ? 'ENABLED' : 'DISABLED')); loadEvents();
-}
-async function resetSelections() {
-  if (!confirm('Reset ALL selections? This cannot be undone.')) return;
-  await api({ action: 'admin_resetSelections' });
-  toast('Selections cleared'); loadQuickStats();
-}
-async function resetReveals() {
-  if (!confirm('Reset ALL reveals? This cannot be undone.')) return;
-  await api({ action: 'admin_resetReveals' });
-  toast('Reveals cleared'); loadQuickStats();
-}
+// === SETTINGS ===
 async function setAdminPin() {
   const newPin = document.getElementById('newPinInput').value.trim();
-  if (!newPin || newPin.length < 4) { toast('PIN must be at least 4 characters'); return; }
-  const res = await api({ action: 'admin_setPin', newPin });
-  if (res.success) { adminPin = newPin; toast('Admin PIN updated!'); document.getElementById('newPinInput').value = ''; }
-  else toast('Error: ' + res.error);
+  if (!newPin || newPin.length < 4) { toast('PIN must be 4+ characters'); return; }
+  const res = await api({ action: 'admin_setPin', newPin }); if (res.success) { adminPin = newPin; toast('PIN updated!'); document.getElementById('newPinInput').value = ''; } else toast('Error: ' + res.error);
 }
-async function genPasswords() {
-  const res = await api({ action: 'admin_generatePasswords' });
-  toast(res.count + ' passwords generated'); loadParticipantsList();
-}
+async function resetSelections() { if (!confirm('Reset ALL selections?')) return; await api({ action: 'admin_resetSelections' }); toast('Selections cleared'); loadQuickStats(); }
+async function resetReveals() { if (!confirm('Reset ALL reveals?')) return; await api({ action: 'admin_resetReveals' }); toast('Reveals cleared'); loadQuickStats(); }
+async function genPasswords() { const res = await api({ action: 'admin_generatePasswords' }); toast(res.count + ' passwords generated'); }
 
-// --- Print ---
+// === PRINT ===
 async function doPrint(type) {
-  const input = document.getElementById('printInput').value.trim().toUpperCase();
-  if (!input) { toast('Enter ID, range, or ALL'); return; }
-
-  // Parse input into list of IDs
+  const input = document.getElementById('printInput').value.trim().toUpperCase(); if (!input) { toast('Enter ID or ALL'); return; }
+  if (!allParticipants.length) { const r = await api({ action: 'admin_getParticipants' }); if (r.success) allParticipants = r.participants; }
   let ids = [];
-  if (input === 'ALL') {
-    if (!allParticipants.length) {
-      const r = await api({ action: 'admin_getParticipants' });
-      if (r.success) allParticipants = r.participants;
-    }
-    ids = allParticipants.filter(p => p.status !== 'absent').map(p => p.participant_id);
-  } else {
-    const parts = input.split(',');
-    for (const part of parts) {
-      const p = part.trim();
-      const rm = p.match(/^([MF])(\d+)-([MF])(\d+)$/);
-      if (rm && rm[1] === rm[3]) {
-        let s = parseInt(rm[2]), e = parseInt(rm[4]);
-        if (s > e) { const t = s; s = e; e = t; }
-        for (let i = s; i <= e; i++) ids.push(rm[1] + i);
-      } else if (p.match(/^[MF]\d+$/)) {
-        ids.push(p);
-      }
-    }
-  }
-
-  if (!ids.length) { toast('No participants found'); return; }
-
-  // Get participant data
-  if (!allParticipants.length) {
-    const r = await api({ action: 'admin_getParticipants' });
-    if (r.success) allParticipants = r.participants;
-  }
-  const pMap = {};
-  for (const p of allParticipants) pMap[p.participant_id.toUpperCase()] = p;
-
-  const labels = [];
-  for (const id of ids) {
-    const p = pMap[id.toUpperCase()];
-    if (p) labels.push({ id: p.participant_id, name: p.name, age: p.age, password: p.password });
-  }
-
+  if (input === 'ALL') { ids = allParticipants.filter(p => p.status !== 'absent').map(p => p.participant_id.toUpperCase()); }
+  else { for (const part of input.split(',')) { const p = part.trim(), rm = p.match(/^([MF])(\d+)-([MF])(\d+)$/); if (rm && rm[1] === rm[3]) { let s = parseInt(rm[2]), e = parseInt(rm[4]); if (s > e) { const t = s; s = e; e = t; } for (let i = s; i <= e; i++) ids.push(rm[1] + i); } else if (p.match(/^[MF]\d+$/)) ids.push(p); } }
+  if (!ids.length) { toast('No participants'); return; }
+  const pMap = {}; for (const p of allParticipants) pMap[p.participant_id.toUpperCase()] = p;
+  const labels = []; for (const id of ids) { const p = pMap[id]; if (p) labels.push({ id: p.participant_id, name: p.name, age: p.age, password: p.password }); }
   if (!labels.length) { toast('No matching participants'); return; }
-
-  // Generate print HTML
   const siteUrl = 'https://darconnecx-code.github.io/newdarmatch/?event=' + currentEventId;
   let html = '';
-
   if (type === 'qr') {
-    html = '<div style="text-align:center;">';
-    labels.forEach((l, i) => {
-      html += '<div style="width:58mm;padding:1mm 2mm;text-align:center;border:1px dashed #ccc;margin:0 auto 2mm;page-break-after:always;">';
-      html += '<div style="font-size:9pt;font-weight:bold;">DarMatch</div>';
-      html += '<div id="qr' + i + '" style="margin:1mm auto;"></div>';
-      html += '<div style="font-size:13pt;font-weight:bold;">' + l.id + '</div>';
-      html += '<div style="font-size:10pt;font-weight:bold;">' + l.name + '</div>';
-      html += '<div style="font-size:11pt;font-weight:bold;">Pass: <span style="font-family:monospace;">' + l.password + '</span></div>';
-      html += '</div>';
-    });
-    html += '</div>';
+    labels.forEach((l, i) => { html += '<div style="width:58mm;padding:1mm 2mm;text-align:center;border:1px dashed #ccc;margin:0 auto 2mm;page-break-after:always;"><div style="font-size:9pt;font-weight:bold;">DarMatch</div><div id="qr' + i + '" style="margin:1mm auto;"></div><div style="font-size:13pt;font-weight:bold;">' + l.id + '</div><div style="font-size:10pt;font-weight:bold;">' + l.name + '</div><div style="font-size:11pt;font-weight:bold;">Pass: <span style="font-family:monospace;">' + l.password + '</span></div></div>'; });
   } else if (type === 'name') {
-    html = '<div style="text-align:center;">';
-    labels.forEach(l => {
-      const fn = l.name.split(' ')[0];
-      html += '<div style="width:58mm;padding:2mm 3mm;text-align:center;border:1px dashed #ccc;margin:0 auto 2mm;page-break-after:always;">';
-      html += '<div style="font-size:14pt;font-weight:bold;">' + l.id + ' - ' + fn + '</div>';
-      if (l.age) html += '<div style="font-size:10pt;font-weight:bold;">Age: ' + l.age + '</div>';
-      html += '</div>';
-    });
-    html += '</div>';
+    labels.forEach(l => { const fn = l.name.split(' ')[0]; html += '<div style="width:58mm;padding:2mm 3mm;text-align:center;border:1px dashed #ccc;margin:0 auto 2mm;page-break-after:always;"><div style="font-size:14pt;font-weight:bold;">' + l.id + ' - ' + fn + '</div>' + (l.age ? '<div style="font-size:10pt;font-weight:bold;">Age: ' + l.age + '</div>' : '') + '</div>'; });
   } else {
-    html = '<div style="text-align:center;">';
-    labels.forEach((l, i) => {
-      const fn = l.name.split(' ')[0];
-      html += '<div style="width:58mm;padding:2mm 3mm;text-align:center;border:1px dashed #ccc;margin:0 auto 2mm;page-break-after:always;">';
-      html += '<div style="font-size:14pt;font-weight:bold;">' + l.id + ' - ' + fn + '</div>';
-      if (l.age) html += '<div style="font-size:10pt;font-weight:bold;">Age: ' + l.age + '</div>';
-      html += '</div>';
-      html += '<div style="width:58mm;padding:1mm 2mm;text-align:center;border:1px dashed #ccc;margin:0 auto 2mm;page-break-after:always;">';
-      html += '<div style="font-size:9pt;font-weight:bold;">DarMatch</div>';
-      html += '<div id="qr' + i + '" style="margin:1mm auto;"></div>';
-      html += '<div style="font-size:13pt;font-weight:bold;">' + l.id + '</div>';
-      html += '<div style="font-size:10pt;font-weight:bold;">' + l.name + '</div>';
-      html += '<div style="font-size:11pt;font-weight:bold;">Pass: <span style="font-family:monospace;">' + l.password + '</span></div>';
-      html += '</div>';
-    });
-    html += '</div>';
+    labels.forEach((l, i) => { const fn = l.name.split(' ')[0]; html += '<div style="width:58mm;padding:2mm 3mm;text-align:center;border:1px dashed #ccc;margin:0 auto 2mm;page-break-after:always;"><div style="font-size:14pt;font-weight:bold;">' + l.id + ' - ' + fn + '</div>' + (l.age ? '<div style="font-size:10pt;font-weight:bold;">Age: ' + l.age + '</div>' : '') + '</div><div style="width:58mm;padding:1mm 2mm;text-align:center;border:1px dashed #ccc;margin:0 auto 2mm;page-break-after:always;"><div style="font-size:9pt;font-weight:bold;">DarMatch</div><div id="qr' + i + '" style="margin:1mm auto;"></div><div style="font-size:13pt;font-weight:bold;">' + l.id + '</div><div style="font-size:10pt;font-weight:bold;">' + l.name + '</div><div style="font-size:11pt;font-weight:bold;">Pass: <span style="font-family:monospace;">' + l.password + '</span></div></div>'; });
   }
-
-  const preview = document.getElementById('printPreview');
-  preview.innerHTML = '<button class="btn btn-gold" onclick="window.print()" style="margin-bottom:12px;">Print</button>' + html;
-
-  // Generate QR codes
-  if (type === 'qr' || type === 'nameqr') {
-    labels.forEach((l, i) => {
-      const el = document.getElementById('qr' + i);
-      if (el) new QRCode(el, { text: siteUrl, width: 76, height: 76, colorDark: '#000', colorLight: '#fff', correctLevel: QRCode.CorrectLevel.M });
-    });
-  }
+  document.getElementById('printPreview').innerHTML = '<button class="btn btn-gold" onclick="window.print()" style="margin-bottom:10px;">Print</button>' + html;
+  if (type === 'qr' || type === 'nameqr') { labels.forEach((l, i) => { const el = document.getElementById('qr' + i); if (el) new QRCode(el, { text: siteUrl, width: 76, height: 76, colorDark: '#000', colorLight: '#fff', correctLevel: QRCode.CorrectLevel.M }); }); }
 }
 </script>
 </body>
 </html>
-
