@@ -251,7 +251,7 @@ tr.absent td{background:#ffecef;color:var(--rose);}
         <div class="field"><label>Event ID (lowercase, no spaces)</label><input type="text" id="newEventId" placeholder="london-june-2026"></div>
         <div class="field"><label>Event Name</label><input type="text" id="newEventName" placeholder="London June 2026"></div>
       </div>
-      <button class="btn btn-gold" onclick="createEvent()">Create Event</button>
+      <button class="btn btn-gold" onclick="doCreateEvent()">Create Event</button>
     </div>
     <div class="section">
       <h2>Admin PIN</h2>
@@ -355,7 +355,7 @@ function updateStatusBadge(ev) {
   document.getElementById('phoneVerifyBtn').style.background = phoneVerifyOn ? 'var(--gold)' : 'transparent';
 }
 
-async function createEvent() {
+async function doCreateEvent() {
   const id = document.getElementById('newEventId').value.trim().toLowerCase().replace(/\s+/g, '-');
   const name = document.getElementById('newEventName').value.trim();
   if (!id) { toast('Event ID required'); return; }
