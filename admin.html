@@ -267,6 +267,11 @@ tr.absent td{background:#ffecef;color:var(--rose);}
         <button class="btn btn-rose btn-sm" onclick="resetReveals()">Reset All Reveals</button>
         <button class="btn btn-gold btn-sm" onclick="genPasswords()">Generate Missing Passwords</button>
       </div>
+      <div style="margin-top:16px;padding-top:16px;border-top:2px solid var(--rose);">
+        <h3 style="color:var(--rose);margin-bottom:8px;">Delete Event</h3>
+        <p style="font-size:12px;color:var(--rose);margin-bottom:8px;">This permanently deletes the event and ALL its data — participants, selections, matches, reveals. Cannot be undone.</p>
+        <button class="btn btn-rose" onclick="deleteEvent()">Delete Current Event</button>
+      </div>
     </div>
   </div>
 </div>
@@ -328,7 +333,18 @@ async function loadEvents() {
   }
 }
 
-function switchEvent() { currentEventId = document.getElementById('eventSelect').value; allParticipants = []; loadEvents(); }
+async function switchEvent() {
+  currentEventId = document.getElementById('eventSelect').value;
+  allParticipants = [];
+  document.getElementById('searchResults').innerHTML = '';
+  document.getElementById('matchesContent').innerHTML = '';
+  document.getElementById('revealsContent').innerHTML = '';
+  document.getElementById('printPreview').innerHTML = '';
+  if (chartAgeInstance) { chartAgeInstance.destroy(); chartAgeInstance = null; }
+  if (chartDiffInstance) { chartDiffInstance.destroy(); chartDiffInstance = null; }
+  await loadEvents();
+  loadParticipantsList();
+}
 
 function updateStatusBadge(ev) {
   if (!ev) return;
@@ -668,6 +684,16 @@ async function setAdminPin() {
   const newPin = document.getElementById('newPinInput').value.trim();
   if (!newPin || newPin.length < 4) { toast('PIN must be 4+ characters'); return; }
   const res = await api({ action: 'admin_setPin', newPin }); if (res.success) { adminPin = newPin; toast('PIN updated!'); document.getElementById('newPinInput').value = ''; } else toast('Error: ' + res.error);
+}
+async function deleteEvent() {
+  const name = document.getElementById('eventSelect').selectedOptions[0].textContent;
+  if (!confirm('DELETE event "' + name + '" (' + currentEventId + ')?\n\nThis permanently removes ALL data:\n- All participants\n- All selections\n- All matches\n- All reveals\n\nThis CANNOT be undone.')) return;
+  if (!confirm('Are you absolutely sure? Type the event ID in the next prompt to confirm.')) return;
+  const typed = prompt('Type the event ID to confirm deletion:\n\n' + currentEventId);
+  if (typed !== currentEventId) { toast('Event ID did not match. Cancelled.'); return; }
+  const res = await api({ action: 'admin_deleteEvent' });
+  if (res.success) { currentEventId = ''; allParticipants = []; toast('Event deleted.'); loadEvents(); showPanel('dashboard'); }
+  else toast('Error: ' + res.error);
 }
 async function resetSelections() { if (!confirm('Reset ALL selections?')) return; await api({ action: 'admin_resetSelections' }); toast('Selections cleared'); loadQuickStats(); }
 async function resetReveals() { if (!confirm('Reset ALL reveals?')) return; await api({ action: 'admin_resetReveals' }); toast('Reveals cleared'); loadQuickStats(); }
