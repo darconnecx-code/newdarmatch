@@ -282,7 +282,7 @@ let chartAgeInstance = null, chartDiffInstance = null;
 let phoneVerifyOn = false;
 
 async function api(params) {
-  params.eventId = currentEventId;
+  if (!params.eventId) params.eventId = currentEventId;
   if (adminPin) params.adminPin = adminPin;
   const res = await fetch(API_URL + '?' + new URLSearchParams(params).toString());
   const data = await res.json();
@@ -340,11 +340,19 @@ function updateStatusBadge(ev) {
 }
 
 async function createEvent() {
-  const id = document.getElementById('newEventId').value.trim();
+  const id = document.getElementById('newEventId').value.trim().toLowerCase().replace(/\s+/g, '-');
   const name = document.getElementById('newEventName').value.trim();
   if (!id) { toast('Event ID required'); return; }
   const res = await api({ action: 'admin_createEvent', eventId: id, name: name || id });
-  if (res.success) { currentEventId = id; toast('Event created!'); loadEvents(); } else toast('Error: ' + res.error);
+  if (res.success) {
+    currentEventId = id;
+    allParticipants = [];
+    document.getElementById('newEventId').value = '';
+    document.getElementById('newEventName').value = '';
+    await loadEvents();
+    toast('Event "' + (name || id) + '" created!');
+    showPanel('dashboard');
+  } else toast('Error: ' + res.error);
 }
 
 async function setEventStatus(status) {
