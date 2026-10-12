@@ -89,6 +89,12 @@
   .popup-actions .btn{flex:1;}
 
   /* T&C modal */
+  .match-remind-item{background:var(--green-light);border:1.5px solid #a5d6a7;border-radius:10px;padding:12px;margin-bottom:8px;}
+  .match-remind-item .name{font-family:'Playfair Display',serif;font-size:.95rem;font-weight:600;margin-bottom:4px;}
+  .match-remind-item .status{font-size:.8rem;color:var(--ink-soft);margin-bottom:8px;}
+  .match-remind-item .actions{display:flex;gap:8px;}
+  .match-remind-item .shared{font-size:.82rem;color:var(--green);font-weight:600;}
+
   .tc-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center;}
   .tc-overlay.show{display:flex;}
   .tc-card{background:#fff;border-radius:var(--radius);padding:28px 24px;max-width:440px;width:90%;max-height:80vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,.2);}
@@ -250,6 +256,19 @@
   </div>
 </div>
 
+<!-- Matches Reminder Popup -->
+<div class="popup-overlay" id="matchReminderPopup" onclick="if(event.target===this)closeMatchReminder()">
+  <div class="popup-card" style="max-width:400px;">
+    <div style="text-align:center;font-size:1.8rem;margin-bottom:8px;">🎉</div>
+    <h3 style="text-align:center;margin-bottom:4px;">You have matches!</h3>
+    <p style="text-align:center;font-size:.83rem;color:var(--ink-soft);margin-bottom:14px;">Don't forget to share your number with your matches.</p>
+    <div id="matchReminderList"></div>
+    <div style="text-align:center;margin-top:14px;">
+      <button class="btn btn-outline" onclick="closeMatchReminder();switchTab('matches');">Go to Matches</button>
+    </div>
+  </div>
+</div>
+
 <script>
 // ============================================================
 const API_URL = 'https://darmatch-api.darmatch.workers.dev';
@@ -387,6 +406,10 @@ async function doLogin() {
       document.getElementById('tcModal').classList.add('show');
     } else {
       showScreen('screenMain'); switchTab('selections');
+      // Show match reminder if there are unshared matches
+      if (cachedMatches.length && cachedMatches.some(m => !m.iAgreed)) {
+        showMatchReminder(cachedMatches);
+      }
     }
   } catch(err){showMsg('loginError','Connection error.','error');}
   btn.textContent='Sign In';btn.disabled=false;
@@ -403,6 +426,59 @@ async function acceptTC() {
     document.getElementById('tcModal').classList.remove('show');
   }
   btn.textContent='I Accept';btn.disabled=false;
+}
+
+// --- Match Reminder Popup ---
+function showMatchReminder(matches) {
+  const unshared = matches.filter(m => !m.iAgreed);
+  if (!unshared.length) return;
+
+  const list = document.getElementById('matchReminderList');
+  let html = '';
+  for (const m of matches) {
+    html += '<div class="match-remind-item" id="remind-' + m.id + '">';
+    html += '<div class="name">' + m.id + ' — ' + m.name + '</div>';
+    if (m.bothAgreed) {
+      html += '<div class="shared">✓ Numbers already shared</div>';
+    } else if (m.iAgreed) {
+      html += '<div class="shared">✓ You shared — waiting for them</div>';
+    } else {
+      html += '<div class="status">Numbers not yet shared</div>';
+      html += '<div class="actions">';
+      html += '<button class="btn btn-sm btn-green" onclick="shareFromReminder(\'' + m.id + '\',this)">Share my number</button>';
+      html += '<button class="btn btn-sm btn-outline" onclick="dismissRemindItem(\'' + m.id + '\')">Later</button>';
+      html += '</div>';
+    }
+    html += '</div>';
+  }
+  list.innerHTML = html;
+  document.getElementById('matchReminderPopup').classList.add('show');
+}
+
+async function shareFromReminder(matchId, btn) {
+  btn.innerHTML = '<span class="spinner"></span>';
+  btn.disabled = true;
+  try {
+    await apiCall({action:'agreeReveal', id:currentUser.id, matchId});
+    const item = document.getElementById('remind-' + matchId);
+    item.innerHTML = '<div class="name">' + matchId + '</div><div class="shared">✓ Number shared!</div>';
+    cachedMatches = null;
+  } catch(e) {
+    btn.textContent = 'Error — retry';
+    btn.disabled = false;
+  }
+}
+
+function dismissRemindItem(matchId) {
+  const item = document.getElementById('remind-' + matchId);
+  if (item) item.style.display = 'none';
+  // Check if all items hidden
+  const visible = document.querySelectorAll('#matchReminderList .match-remind-item:not([style*="display: none"])');
+  if (!visible.length) closeMatchReminder();
+}
+
+function closeMatchReminder() {
+  document.getElementById('matchReminderPopup').classList.remove('show');
 }
 
 // --- Profile Popup ---
@@ -584,4 +660,3 @@ function renderSelectedMe(list){
 </script>
 </body>
 </html>
-
