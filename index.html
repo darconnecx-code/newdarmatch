@@ -1,1 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DarMatch</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--gold:#c9a84c;--gold-light:#e8d598;--gold-dark:#a07d2e;--ink:#1a1a2e;--ink-soft:#2d2d44;--cream:#faf6ef;--cream-dark:#f0e8d8;--rose:#c4556e;--rose-soft:#e8a0b0;--green:#4a8c6f;--green-light:#e8f5e9;--radius:12px;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;}
+  body::before{content:'';position:fixed;top:-50%;right:-30%;width:80vw;height:80vw;border-radius:50%;background:radial-gradient(circle,var(--gold-light) 0%,transparent 70%);opacity:.2;pointer-events:none;}
+  body::after{content:'';position:fixed;bottom:-40%;left:-20%;width:60vw;height:60vw;border-radius:50%;background:radial-gradient(circle,var(--rose-soft) 0%,transparent 70%);opacity:.15;pointer-events:none;}
+  .container{position:relative;z-index:1;max-width:600px;margin:0 auto;padding:32px 20px 100px;}
+  .header{text-align:center;margin-bottom:30px;}
+  .header .ornament{font-size:24px;color:var(--gold);letter-spacing:12px;margin-bottom:6px;}
+  .header h1{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;}
+  .header p{margin-top:8px;color:var(--ink-soft);font-size:.9rem;line-height:1.5;}
+  .card{background:#fff;border:1px solid var(--cream-dark);border-radius:var(--radius);padding:24px 20px;margin-bottom:16px;box-shadow:0 2px 20px rgba(0,0,0,.04);}
+  .card h2{font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:4px;}
+  .card .subtitle{font-size:.83rem;color:var(--ink-soft);margin-bottom:18px;line-height:1.5;}
+  label{display:block;font-weight:600;font-size:.76rem;text-transform:uppercase;letter-spacing:.6px;color:var(--ink-soft);margin-bottom:5px;}
+  input[type="text"],input[type="password"]{width:100%;padding:11px 14px;font-family:'DM Sans',sans-serif;font-size:1rem;border:1.5px solid var(--cream-dark);border-radius:8px;background:var(--cream);color:var(--ink);outline:none;transition:border-color .2s;}
+  input:focus{border-color:var(--gold);}
+  .field{margin-bottom:16px;}
+  .btn{display:inline-flex;align-items:center;justify-content:center;width:100%;padding:12px 20px;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:600;border:none;border-radius:8px;cursor:pointer;transition:all .25s;}
+  .btn-primary{background:var(--gold);color:#fff;}.btn-primary:hover{background:var(--gold-dark);}
+  .btn-primary:disabled{background:var(--cream-dark);color:#aaa;cursor:not-allowed;}
+  .btn-sm{width:auto;padding:7px 16px;font-size:.8rem;border-radius:6px;}
+  .btn-green{background:var(--green);color:#fff;}.btn-green:hover{background:#3d7a5e;}
+  .btn-rose{background:var(--rose);color:#fff;}.btn-rose:hover{background:#a84058;}
+  .btn-outline{background:transparent;border:1.5px solid var(--gold);color:var(--gold-dark);width:auto;padding:7px 16px;font-size:.8rem;border-radius:6px;}
+
+  .countdown-banner{background:linear-gradient(135deg,#fff3cd,#fff8e1);border:1.5px solid #ffe082;border-radius:var(--radius);padding:14px 18px;margin-bottom:16px;text-align:center;}
+  .countdown-banner .days{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--gold-dark);}
+  .countdown-banner .label-text{font-size:.82rem;color:var(--ink-soft);margin-top:2px;}
+
+  .tabs{display:flex;gap:0;margin-bottom:16px;border-bottom:2px solid var(--cream-dark);}
+  .tab{flex:1;padding:10px 6px;text-align:center;font-size:.82rem;font-weight:600;color:var(--ink-soft);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;}
+  .tab.active{color:var(--gold-dark);border-bottom-color:var(--gold);}
+  .tab-content{display:none;}.tab-content.active{display:block;animation:fadeIn .3s ease;}
+
+  .options-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-bottom:16px;max-height:400px;overflow-y:auto;padding:2px;}
+  .option-chip{display:flex;align-items:center;gap:6px;padding:9px 12px;background:var(--cream);border:1.5px solid var(--cream-dark);border-radius:8px;cursor:pointer;font-size:.8rem;font-weight:500;transition:all .2s;user-select:none;}
+  .option-chip:hover{border-color:var(--gold-light);background:#fff;}
+  .option-chip.selected{border-color:var(--gold);background:linear-gradient(135deg,#fdf6e3,#fff8e7);box-shadow:0 0 0 1px var(--gold);}
+  .option-chip .check{display:none;color:var(--gold-dark);font-weight:700;font-size:.9rem;}
+  .option-chip.selected .check{display:inline;}
+
+  .selected-list{margin-bottom:16px;}
+  .selected-list h3{font-size:.76rem;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--ink-soft);margin-bottom:8px;}
+  .sel-count{font-size:.8rem;color:var(--ink-soft);margin-bottom:8px;}
+  .selected-tag{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:#fff;border:1.5px solid var(--gold-light);border-radius:20px;margin:3px 3px 3px 0;font-size:.83rem;font-weight:500;cursor:pointer;}
+  .selected-tag:hover{background:var(--cream);}
+  .selected-tag .remove-x{color:var(--rose);font-weight:700;font-size:.9rem;}
+
+  .search-box{width:100%;padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:.86rem;border:1.5px solid var(--cream-dark);border-radius:8px;background:var(--cream);color:var(--ink);outline:none;margin-bottom:10px;}
+  .search-box:focus{border-color:var(--gold);}
+
+  .msg{padding:11px 14px;border-radius:8px;font-size:.85rem;margin-bottom:12px;line-height:1.5;}
+  .msg-error{background:#fdedef;color:#9b2c3e;border:1px solid #f5c6ce;}
+  .msg-success{background:#e8f5e9;color:#2e6b3a;border:1px solid #c8e6c9;}
+  .msg-info{background:#fff8e1;color:#7c6316;border:1px solid #ffe082;}
+
+  .match-card{background:var(--green-light);border:1.5px solid #a5d6a7;border-radius:10px;padding:14px;margin-bottom:10px;}
+  .match-card h3{font-family:'Playfair Display',serif;font-size:1rem;margin-bottom:4px;cursor:pointer;}
+  .match-card h3:hover{color:var(--gold-dark);}
+  .match-card .detail{font-size:.82rem;color:var(--ink-soft);margin-bottom:4px;}
+  .match-card .phone-reveal{margin-top:8px;padding:10px 12px;background:#fff;border-radius:8px;font-size:.85rem;}
+  .match-card .phone-number{font-size:1.05rem;font-weight:700;color:var(--green);letter-spacing:1px;}
+  .match-card .action-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
+
+  .selector-tag{display:inline-block;padding:5px 12px;background:var(--cream);border:1.5px solid var(--gold-light);border-radius:20px;font-size:.83rem;font-weight:500;margin:3px 3px 3px 0;cursor:pointer;transition:all .2s;}
+  .selector-tag:hover{background:#fff;border-color:var(--gold);}
+
+  /* Sticky save button */
+  .sticky-save{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--cream-dark);padding:12px 20px;z-index:50;display:none;}
+  .sticky-save .inner{max-width:560px;margin:0 auto;}
+
+  /* Profile popup overlay */
+  .popup-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:100;align-items:center;justify-content:center;}
+  .popup-overlay.show{display:flex;}
+  .popup-card{background:#fff;border-radius:var(--radius);padding:24px 20px;max-width:340px;width:90%;box-shadow:0 8px 40px rgba(0,0,0,.15);animation:fadeIn .25s ease;}
+  .popup-card h3{font-family:'Playfair Display',serif;font-size:1.1rem;margin-bottom:12px;color:var(--ink);}
+  .popup-row{display:flex;margin-bottom:6px;font-size:.85rem;}
+  .popup-lbl{width:100px;font-weight:600;color:var(--ink-soft);flex-shrink:0;}
+  .popup-val{flex:1;color:var(--ink);}
+  .popup-actions{display:flex;gap:8px;margin-top:16px;}
+  .popup-actions .btn{flex:1;}
+
+  /* T&C modal */
+  .tc-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center;}
+  .tc-overlay.show{display:flex;}
+  .tc-card{background:#fff;border-radius:var(--radius);padding:28px 24px;max-width:440px;width:90%;max-height:80vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,.2);}
+  .tc-card h2{font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:14px;}
+  .tc-card .tc-text{font-size:.85rem;color:var(--ink-soft);line-height:1.7;margin-bottom:20px;}
+  .tc-card .tc-text p{margin-bottom:10px;}
+
+  .spinner{display:inline-block;width:16px;height:16px;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;margin-right:6px;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .screen{display:none;}.screen.active{display:block;animation:fadeIn .4s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .footer{text-align:center;margin-top:30px;font-size:.76rem;color:#aaa;}
+  .closed-banner{text-align:center;padding:50px 20px;}
+  .closed-banner h2{font-family:'Playfair Display',serif;font-size:1.7rem;margin-bottom:10px;}
+  .closed-banner p{color:var(--ink-soft);font-size:.95rem;}
+  .loading-dots::after{content:'';animation:dots 1.5s steps(4,end) infinite;}
+  @keyframes dots{0%{content:'';}25%{content:'.';}50%{content:'..';}75%{content:'...';}}
+  .loading-bouncer{display:flex;justify-content:center;gap:10px;}
+  .bounce-dot{width:14px;height:14px;border-radius:50%;background:var(--gold);animation:bounce 1.4s ease-in-out infinite;}
+  .bounce-dot:nth-child(2){animation-delay:.2s;}
+  .bounce-dot:nth-child(3){animation-delay:.4s;}
+  @keyframes bounce{0%,80%,100%{transform:scale(0.3);opacity:0.3;}40%{transform:scale(1);opacity:1;}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="ornament">✦ ✦ ✦</div>
+    <h1>DarMatch</h1>
+    <p>Log in with your ID and password to<br>submit selections and view matches.</p>
+  </div>
+
+  <div class="screen active" id="screenLoading">
+    <div class="card" style="text-align:center;padding:50px 20px;">
+      <div class="loading-bouncer"><div class="bounce-dot"></div><div class="bounce-dot"></div><div class="bounce-dot"></div></div>
+      <p style="margin-top:16px;color:var(--ink-soft);font-size:.9rem;">Loading, please wait...</p>
+    </div>
+  </div>
+
+  <div id="countdownBanner" class="countdown-banner" style="display:none;">
+    <div class="days" id="countdownDays"></div>
+    <div class="label-text" id="countdownLabel"></div>
+  </div>
+
+  <div class="screen" id="screenClosed">
+    <div class="card closed-banner">
+      <div style="font-size:2.5rem;margin-bottom:14px;">🔒</div>
+      <h2>Event Closed</h2>
+      <p>This matchmaking event has ended.<br>Thank you for participating!</p>
+    </div>
+  </div>
+
+  <div class="screen" id="screenLogin">
+    <div class="card">
+      <h2>Sign In</h2>
+      <p class="subtitle">Enter the participant ID and password you received.</p>
+      <div id="loginError"></div>
+      <div class="field">
+        <label for="loginId">Participant ID</label>
+        <input type="text" id="loginId" placeholder="e.g. M12 or F7" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="loginPass">Password</label>
+        <input type="password" id="loginPass" placeholder="6-digit password" inputmode="numeric">
+      </div>
+      <div class="field" id="phoneVerifyField" style="display:none;">
+        <label for="loginPhone">Last 4 digits of your phone number</label>
+        <input type="text" id="loginPhone" placeholder="e.g. 7619" inputmode="numeric" maxlength="4" autocomplete="off">
+      </div>
+      <button class="btn btn-primary" id="btnLogin" onclick="doLogin()">Sign In</button>
+    </div>
+  </div>
+
+  <div class="screen" id="screenMain">
+    <div class="card" style="padding-bottom:6px;">
+      <h2>Welcome, <span id="userName"></span></h2>
+      <p class="subtitle" id="mainSubtitle"></p>
+      <div class="tabs">
+        <div class="tab active" onclick="switchTab('selections')">Selections</div>
+        <div class="tab" onclick="switchTab('matches')">Matches <span id="matchBadge"></span></div>
+        <div class="tab" onclick="switchTab('selectedme')">Selected Me</div>
+      </div>
+    </div>
+
+    <div class="tab-content active" id="tabSelections">
+      <div class="card" style="padding-bottom:80px;">
+        <div id="selError"></div>
+        <label>Tap to view profile and select</label>
+        <input type="text" class="search-box" id="searchBox" placeholder="Search by ID or name..." oninput="renderOptions()">
+        <div class="options-grid" id="optionsGrid"></div>
+        <div class="selected-list" id="selectedListWrap" style="display:none;">
+          <h3>Your selections</h3>
+          <div class="sel-count" id="selCount"></div>
+          <div id="selectedList"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="tabMatches">
+      <div class="card">
+        <div id="matchesLoading" class="msg msg-info">Loading matches<span class="loading-dots"></span></div>
+        <div id="matchesContent"></div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="tabSelectedme">
+      <div class="card">
+        <div id="selectedMeLoading" class="msg msg-info">Loading<span class="loading-dots"></span></div>
+        <div id="selectedMeContent"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen" id="screenDone">
+    <div class="card" style="text-align:center;">
+      <div style="font-size:2.5rem;margin-bottom:14px;">✓</div>
+      <h2>Selections Saved!</h2>
+      <p class="subtitle">You can log in again anytime to update or check matches.</p>
+      <button class="btn btn-outline" onclick="showScreen('screenMain');switchTab('matches');">View My Matches</button>
+    </div>
+  </div>
+
+  <div class="footer">DarMatch Event System</div>
+</div>
+
+<!-- Sticky Save Button -->
+<div class="sticky-save" id="stickySave">
+  <div class="inner">
+    <button class="btn btn-primary" id="btnSubmit" onclick="doSubmit()" disabled>No changes to save</button>
+  </div>
+</div>
+
+<!-- Profile Popup -->
+<div class="popup-overlay" id="profilePopup" onclick="if(event.target===this)closeProfile()">
+  <div class="popup-card">
+    <h3 id="profileTitle"></h3>
+    <div class="popup-row"><span class="popup-lbl">Age</span><span class="popup-val" id="profileAge"></span></div>
+    <div class="popup-row"><span class="popup-lbl">Ethnicity</span><span class="popup-val" id="profileEthnicity"></span></div>
+    <div class="popup-row"><span class="popup-lbl">Nationality</span><span class="popup-val" id="profileNationality"></span></div>
+    <div class="popup-row"><span class="popup-lbl">Occupation</span><span class="popup-val" id="profileOccupation"></span></div>
+    <div class="popup-actions" id="profileActions"></div>
+  </div>
+</div>
+
+<!-- T&C Modal -->
+<div class="tc-overlay" id="tcModal">
+  <div class="tc-card">
+    <h2>Terms & Conditions</h2>
+    <div class="tc-text">
+      <p>By using DarMatch, you agree to the following terms:</p>
+      <p>1. Your personal information (name, phone number, age) will be stored securely and used solely for the purpose of this matchmaking event.</p>
+      <p>2. Your phone number will only be shared with a mutual match, and only when both parties agree to share.</p>
+      <p>3. You may revoke your consent to share your phone number at any time.</p>
+      <p>4. You agree to behave respectfully towards all participants.</p>
+      <p>5. The organisers reserve the right to remove any participant who behaves inappropriately.</p>
+      <p><strong>Disclaimer:</strong> Dar is not responsible for any loss, misuse of data, or any outcomes arising from connections made through this platform. By accepting, you acknowledge that participation is voluntary and at your own discretion.</p>
+    </div>
+    <button class="btn btn-primary" id="btnAcceptTC" onclick="acceptTC()">I Accept</button>
+  </div>
+</div>
+
+<script>
+// ============================================================
+const API_URL = 'https://darmatch-api.darmatch.workers.dev';
+const EVENT_ID = new URLSearchParams(window.location.search).get('event') || 'default';
+// ============================================================
+
+let currentUser = null, options = [], selected = [];
+let countdownEnd = null;
+let cachedMatches = null, cachedSelectedBy = null;
+let originalSelections = '';
+let activeTab = 'selections';
+let phoneVerifyEnabled = false;
+
+window.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const res = await apiCall({action:'checkStatus'});
+    if (res.success && res.status === 'CLOSED') { showScreen('screenClosed'); return; }
+    if (res.phoneVerify) {
+      phoneVerifyEnabled = true;
+      document.getElementById('phoneVerifyField').style.display = 'block';
+    }
+    if (res.countdownEnd) {
+      countdownEnd = new Date(res.countdownEnd);
+      updateCountdown();
+      setInterval(updateCountdown, 60000);
+    }
+    showScreen('screenLogin');
+  } catch(e) { showScreen('screenLogin'); }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('loginPass').addEventListener('keydown', e => { if(e.key==='Enter') { if(phoneVerifyEnabled) document.getElementById('loginPhone').focus(); else doLogin(); } });
+  document.getElementById('loginId').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('loginPass').focus(); });
+  document.getElementById('loginPhone').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+});
+
+function updateCountdown() {
+  if (!countdownEnd) return;
+  const now = new Date(), diff = countdownEnd - now;
+  if (diff <= 0) { document.getElementById('countdownBanner').style.display = 'none'; showScreen('screenClosed'); return; }
+  const totalMin = Math.floor(diff/(1000*60)), totalHrs = Math.floor(totalMin/60), totalDays = Math.floor(totalHrs/24);
+  const remHrs = totalHrs%24, remMin = totalMin%60;
+  let text, label;
+  if (totalDays>=2) { text=totalDays+' days'; label='remaining before event closes'; }
+  else if (totalDays===1) { text='1 day '+remHrs+'h'; label='remaining — submit your selections!'; }
+  else if (totalHrs>=1) { text=totalHrs+'h '+remMin+'m'; label='remaining — submit your selections!'; }
+  else { text=remMin+' minutes'; label='remaining — hurry!'; }
+  document.getElementById('countdownBanner').style.display='block';
+  document.getElementById('countdownDays').textContent=text;
+  document.getElementById('countdownLabel').textContent=label;
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  // Show sticky save only on main screen selections tab
+  updateStickySave();
+}
+function showMsg(c,t,ty){document.getElementById(c).innerHTML='<div class="msg msg-'+ty+'">'+t+'</div>';}
+function clearMsg(c){document.getElementById(c).innerHTML='';}
+
+async function apiCall(params, retries) {
+  if (retries === undefined) retries = 1;
+  params.eventId = EVENT_ID;
+  try {
+    const res = await fetch(API_URL+'?'+new URLSearchParams(params).toString());
+    if(!res.ok) throw new Error('Network '+res.status);
+    return res.json();
+  } catch(e) {
+    if (retries > 0) return apiCall(params, retries - 1);
+    throw e;
+  }
+}
+
+function switchTab(name) {
+  activeTab = name;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab'+name.charAt(0).toUpperCase()+name.slice(1)).classList.add('active');
+  const map={selections:0,matches:1,selectedme:2};
+  document.querySelectorAll('.tab')[map[name]].classList.add('active');
+  if(name==='matches') loadMatches();
+  if(name==='selectedme') loadSelectedMe();
+  updateStickySave();
+}
+
+function updateStickySave() {
+  const el = document.getElementById('stickySave');
+  const mainActive = document.getElementById('screenMain').classList.contains('active');
+  el.style.display = (mainActive && activeTab === 'selections') ? 'block' : 'none';
+}
+
+// --- Login ---
+async function doLogin() {
+  clearMsg('loginError');
+  const id=document.getElementById('loginId').value.trim();
+  const pw=document.getElementById('loginPass').value.trim();
+  if(!id||!pw){showMsg('loginError','Please enter both fields.','error');return;}
+  const phoneLast4 = phoneVerifyEnabled ? document.getElementById('loginPhone').value.trim() : '';
+  if(phoneVerifyEnabled && phoneLast4.length !== 4){showMsg('loginError','Please enter the last 4 digits of your phone number.','error');return;}
+  const btn=document.getElementById('btnLogin');
+  btn.innerHTML='<span class="spinner"></span> Signing in…';btn.disabled=true;
+  try {
+    const params = {action:'login',id,password:pw};
+    if (phoneVerifyEnabled) params.phoneLast4 = phoneLast4;
+    const res = await apiCall(params);
+    if(!res.success){
+      if(res.error==='EVENT_CLOSED'){showScreen('screenClosed');return;}
+      showMsg('loginError',res.error,'error');btn.textContent='Sign In';btn.disabled=false;return;
+    }
+
+    currentUser=res.participant;
+    options=res.options;
+    cachedMatches=res.matches||[];
+    cachedSelectedBy=res.selectedBy||[];
+
+    document.getElementById('userName').textContent=currentUser.name||currentUser.id;
+    const lbl=res.myGender==='M'?'female':'male';
+    if(currentUser.alreadySubmitted&&currentUser.selections){
+      selected=currentUser.selections.split(',').map(s=>s.trim().toUpperCase()).filter(s=>s);
+      originalSelections=selected.join(',');
+      document.getElementById('mainSubtitle').textContent='You are '+currentUser.id+'. Update selections or view matches.';
+    } else {
+      selected=[]; originalSelections='';
+      document.getElementById('mainSubtitle').textContent='You are '+currentUser.id+'. Select '+lbl+' participants you are interested in.';
+    }
+
+    document.getElementById('matchBadge').textContent=cachedMatches.length?'('+cachedMatches.length+')':'';
+
+    renderOptions();
+
+    // Check T&C
+    if (!currentUser.tcAccepted) {
+      showScreen('screenMain'); switchTab('selections');
+      document.getElementById('tcModal').classList.add('show');
+    } else {
+      showScreen('screenMain'); switchTab('selections');
+    }
+  } catch(err){showMsg('loginError','Connection error.','error');}
+  btn.textContent='Sign In';btn.disabled=false;
+}
+
+async function acceptTC() {
+  const btn = document.getElementById('btnAcceptTC');
+  btn.innerHTML='<span class="spinner"></span> Accepting…';btn.disabled=true;
+  try {
+    await apiCall({action:'acceptTC',id:currentUser.id});
+    currentUser.tcAccepted = true;
+    document.getElementById('tcModal').classList.remove('show');
+  } catch(e) {
+    document.getElementById('tcModal').classList.remove('show');
+  }
+  btn.textContent='I Accept';btn.disabled=false;
+}
+
+// --- Profile Popup ---
+function showProfile(id, showSelectBtn) {
+  const opt = options.find(o => o.id === id);
+  if (!opt) return;
+  document.getElementById('profileTitle').textContent = opt.id + ' — ' + opt.name;
+  document.getElementById('profileAge').textContent = opt.age || '—';
+  document.getElementById('profileEthnicity').textContent = opt.ethnicity || '—';
+  document.getElementById('profileNationality').textContent = opt.nationality || '—';
+  document.getElementById('profileOccupation').textContent = opt.occupation || '—';
+
+  const actions = document.getElementById('profileActions');
+  const isSel = selected.includes(id);
+  if (showSelectBtn) {
+    if (isSel) {
+      actions.innerHTML = '<button class="btn btn-sm btn-rose" onclick="toggleFromProfile(\''+id+'\')">Remove ✕</button><button class="btn btn-sm btn-outline" onclick="closeProfile()">Close</button>';
+    } else {
+      actions.innerHTML = '<button class="btn btn-sm btn-green" onclick="toggleFromProfile(\''+id+'\')">Select ✓</button><button class="btn btn-sm btn-outline" onclick="closeProfile()">Close</button>';
+    }
+  } else {
+    actions.innerHTML = '<button class="btn btn-sm btn-outline" onclick="closeProfile()">Close</button>';
+  }
+  document.getElementById('profilePopup').classList.add('show');
+}
+
+function toggleFromProfile(id) {
+  const i = selected.indexOf(id);
+  if (i >= 0) selected.splice(i, 1); else selected.push(id);
+  renderOptions();
+  closeProfile();
+}
+
+function closeProfile() {
+  document.getElementById('profilePopup').classList.remove('show');
+}
+
+// --- Options ---
+function renderOptions(){
+  const grid=document.getElementById('optionsGrid');
+  const q=(document.getElementById('searchBox').value||'').toLowerCase();
+  grid.innerHTML='';
+  options.filter(o=>o.id.toLowerCase().includes(q)||o.name.toLowerCase().includes(q)).forEach(opt=>{
+    const chip=document.createElement('div');
+    const isSel=selected.includes(opt.id);
+    chip.className='option-chip'+(isSel?' selected':'');
+    chip.innerHTML='<span class="check">✓</span><span>'+opt.id+' — '+opt.name+'</span>';
+    chip.onclick=()=>showProfile(opt.id, true);
+    grid.appendChild(chip);
+  });
+  renderSelectedList();
+  updateSaveButton();
+}
+
+function updateSaveButton() {
+  const changed = selected.join(',') !== originalSelections;
+  const btn = document.getElementById('btnSubmit');
+  btn.disabled = !changed;
+  btn.textContent = changed ? (selected.length ? 'Save Selections' : 'Clear All Selections') : 'No changes to save';
+}
+
+function renderSelectedList(){
+  const wrap=document.getElementById('selectedListWrap'),list=document.getElementById('selectedList');
+  if(!selected.length){wrap.style.display='none';return;}
+  wrap.style.display='block';
+  document.getElementById('selCount').textContent=selected.length+' selected';
+  list.innerHTML='';
+  selected.forEach((id,i)=>{
+    const opt=options.find(o=>o.id===id);
+    const span=document.createElement('span');span.className='selected-tag';
+    span.innerHTML=id+(opt&&opt.name?' — '+opt.name:'')+' <span class="remove-x" onclick="event.stopPropagation();removeAt('+i+')">✕</span>';
+    span.onclick=()=>showProfile(id, true);
+    list.appendChild(span);
+  });
+}
+function removeAt(i){selected.splice(i,1);renderOptions();}
+
+// --- Submit ---
+async function doSubmit(){
+  clearMsg('selError');
+  const btn=document.getElementById('btnSubmit');
+  btn.innerHTML='<span class="spinner"></span> Saving…';btn.disabled=true;
+  try{
+    const selString = selected.join(',');
+    const res = await apiCall({action:'submitSelections',id:currentUser.id,selections:selString||'_CLEAR_'});
+    if(!res.success){showMsg('selError',res.error,'error');btn.textContent='Save Selections';btn.disabled=false;return;}
+    currentUser.alreadySubmitted = selected.length > 0;
+    currentUser.selections = selString;
+    originalSelections = selString;
+    cachedMatches=null;cachedSelectedBy=null;
+    btn.textContent='No changes to save';btn.disabled=true;
+    showScreen('screenDone');
+  }catch(e){showMsg('selError','Connection error.','error');btn.textContent='Save Selections';btn.disabled=false;}
+}
+
+// --- Matches ---
+async function loadMatches(forceRefresh){
+  const content=document.getElementById('matchesContent'),loading=document.getElementById('matchesLoading');
+  if(cachedMatches && !forceRefresh){ loading.style.display='none'; renderMatches(cachedMatches); return; }
+  content.innerHTML='';loading.style.display='block';
+  try{
+    const res=await apiCall({action:'getMyMatches',id:currentUser.id});
+    loading.style.display='none';
+    if(!res.success){content.innerHTML='<div class="msg msg-error">'+res.error+'</div>';return;}
+    cachedMatches=res.matches||[];
+    renderMatches(cachedMatches);
+  }catch(e){loading.style.display='none';content.innerHTML='<div class="msg msg-error">Connection error.</div>';}
+}
+
+function renderMatches(matches){
+  const content=document.getElementById('matchesContent');
+  if(!matches||!matches.length){
+    content.innerHTML='<div class="msg msg-info">No mutual matches yet. Check back later!</div><div style="margin-top:12px;"><button class="btn btn-outline" onclick="cachedMatches=null;loadMatches(true);">Refresh</button></div>';
+    document.getElementById('matchBadge').textContent='';return;
+  }
+  document.getElementById('matchBadge').textContent='('+matches.length+')';
+  let html='';
+  matches.forEach(m=>{
+    html+='<div class="match-card">';
+    html+='<h3 onclick="showProfile(\''+m.id+'\',false)">Match: '+m.id+(m.name?' — '+m.name:'')+'</h3>';
+    html+='<div class="detail">You both selected each other!</div>';
+    html+='<div class="phone-reveal">';
+    if(m.bothAgreed){
+      html+='<div style="margin-bottom:6px;">Both agreed! Numbers revealed:</div>';
+      html+='<div class="phone-number">📞 '+m.phone+'</div>';
+      html+='<div class="action-row"><button class="btn btn-sm btn-rose" onclick="revokeReveal(\''+m.id+'\',this)">Revoke sharing</button></div>';
+    } else if(m.iAgreed&&!m.theyAgreed){
+      html+='✓ You agreed to share.<br>Waiting for <strong>'+m.id+'</strong> to agree…';
+      html+='<div class="action-row"><button class="btn btn-sm btn-rose" onclick="revokeReveal(\''+m.id+'\',this)">Revoke</button></div>';
+    } else {
+      html+='<div style="margin-bottom:6px;">Share phone numbers with this match?</div>';
+      if(m.theyAgreed) html+='<div style="margin-bottom:6px;color:var(--green);font-weight:600;">✓ '+m.id+' has already agreed!</div>';
+      html+='<button class="btn btn-sm btn-green" onclick="agreeReveal(\''+m.id+'\',this)">Yes, share my number</button>';
+    }
+    html+='</div></div>';
+  });
+  html+='<div style="margin-top:12px;"><button class="btn btn-outline" onclick="cachedMatches=null;loadMatches(true);">Refresh</button></div>';
+  content.innerHTML=html;
+}
+
+async function agreeReveal(matchId,btn){
+  btn.innerHTML='<span class="spinner"></span>';btn.disabled=true;
+  try{await apiCall({action:'agreeReveal',id:currentUser.id,matchId});cachedMatches=null;loadMatches(true);}
+  catch(e){btn.textContent='Error — retry';btn.disabled=false;}
+}
+
+async function revokeReveal(matchId,btn){
+  btn.innerHTML='<span class="spinner"></span>';btn.disabled=true;
+  try{await apiCall({action:'revokeReveal',id:currentUser.id,matchId});cachedMatches=null;loadMatches(true);}
+  catch(e){btn.textContent='Error — retry';btn.disabled=false;}
+}
+
+// --- Who selected me ---
+async function loadSelectedMe(forceRefresh){
+  const content=document.getElementById('selectedMeContent'),loading=document.getElementById('selectedMeLoading');
+  if(cachedSelectedBy && !forceRefresh){ loading.style.display='none'; renderSelectedMe(cachedSelectedBy); return; }
+  content.innerHTML='';loading.style.display='block';
+  try{
+    const res=await apiCall({action:'whoSelectedMe',id:currentUser.id});
+    loading.style.display='none';
+    if(!res.success){content.innerHTML='<div class="msg msg-error">'+res.error+'</div>';return;}
+    cachedSelectedBy=res.selectedBy||[];
+    renderSelectedMe(cachedSelectedBy);
+  }catch(e){loading.style.display='none';content.innerHTML='<div class="msg msg-error">Connection error.</div>';}
+}
+
+function renderSelectedMe(list){
+  const content=document.getElementById('selectedMeContent');
+  if(!list||!list.length){content.innerHTML='<div class="msg msg-info">No one has selected you yet.</div><div style="margin-top:12px;"><button class="btn btn-outline" onclick="cachedSelectedBy=null;loadSelectedMe(true);">Refresh</button></div>';return;}
+  let html='<p style="margin-bottom:10px;font-size:.88rem;color:var(--ink-soft);">'+list.length+' participant(s) selected you:</p><div>';
+  list.forEach(id=>{
+    const opt = options.find(o => o.id === id);
+    const name = opt ? ' — ' + opt.name : '';
+    html+='<span class="selector-tag" onclick="showProfile(\''+id+'\',false)">'+id+name+'</span>';
+  });
+  html+='</div><div style="margin-top:12px;"><button class="btn btn-outline" onclick="cachedSelectedBy=null;loadSelectedMe(true);">Refresh</button></div>';
+  content.innerHTML=html;
+}
+</script>
+</body>
+</html>
 
