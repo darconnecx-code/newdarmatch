@@ -95,6 +95,20 @@
   .match-remind-item .actions{display:flex;gap:8px;}
   .match-remind-item .shared{font-size:.82rem;color:var(--green);font-weight:600;}
 
+  /* Photo */
+  .photo-circle{width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid var(--gold-light);margin:0 auto 10px;display:block;}
+  .photo-circle-sm{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid var(--gold-light);}
+  .photo-placeholder{width:80px;height:80px;border-radius:50%;background:var(--cream-dark);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:28px;color:var(--ink-soft);border:3px dashed var(--gold-light);}
+  .photo-placeholder-sm{width:48px;height:48px;border-radius:50%;background:var(--cream-dark);display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--ink-soft);border:2px dashed var(--gold-light);}
+  .photo-upload-area{text-align:center;padding:16px;background:var(--cream);border-radius:var(--radius);margin-bottom:12px;}
+  .photo-upload-area input[type=file]{display:none;}
+  .crop-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.8);z-index:250;align-items:center;justify-content:center;flex-direction:column;}
+  .crop-overlay.show{display:flex;}
+  .crop-canvas{border-radius:50%;border:3px solid var(--gold);}
+  .crop-actions{display:flex;gap:10px;margin-top:14px;}
+  .user-photo-row{display:flex;align-items:center;gap:12px;margin-bottom:4px;}
+  .user-photo-row .add-photo-link{font-size:.8rem;color:var(--gold-dark);cursor:pointer;text-decoration:underline;}
+
   .tc-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center;}
   .tc-overlay.show{display:flex;}
   .tc-card{background:#fff;border-radius:var(--radius);padding:28px 24px;max-width:440px;width:90%;max-height:80vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,.2);}
@@ -170,8 +184,13 @@
 
   <div class="screen" id="screenMain">
     <div class="card" style="padding-bottom:6px;">
-      <h2>Welcome, <span id="userName"></span></h2>
-      <p class="subtitle" id="mainSubtitle"></p>
+      <div class="user-photo-row">
+        <div id="userPhotoWrap"></div>
+        <div>
+          <h2 style="margin-bottom:2px;">Welcome, <span id="userName"></span></h2>
+          <p class="subtitle" id="mainSubtitle" style="margin-bottom:0;"></p>
+        </div>
+      </div>
       <div class="tabs">
         <div class="tab active" onclick="switchTab('selections')">Selections</div>
         <div class="tab" onclick="switchTab('matches')">Matches <span id="matchBadge"></span></div>
@@ -230,12 +249,38 @@
 <!-- Profile Popup -->
 <div class="popup-overlay" id="profilePopup" onclick="if(event.target===this)closeProfile()">
   <div class="popup-card">
-    <h3 id="profileTitle"></h3>
+    <div id="profilePhotoWrap" style="text-align:center;"></div>
+    <h3 id="profileTitle" style="text-align:center;"></h3>
     <div class="popup-row"><span class="popup-lbl">Age</span><span class="popup-val" id="profileAge"></span></div>
     <div class="popup-row"><span class="popup-lbl">Ethnicity</span><span class="popup-val" id="profileEthnicity"></span></div>
     <div class="popup-row"><span class="popup-lbl">Nationality</span><span class="popup-val" id="profileNationality"></span></div>
     <div class="popup-row"><span class="popup-lbl">Occupation</span><span class="popup-val" id="profileOccupation"></span></div>
     <div class="popup-actions" id="profileActions"></div>
+  </div>
+</div>
+
+<!-- Photo Upload Popup -->
+<div class="popup-overlay" id="photoUploadPopup" onclick="if(event.target===this)closePhotoUpload()">
+  <div class="popup-card" style="text-align:center;">
+    <h3>Add Your Photo</h3>
+    <p style="font-size:.83rem;color:var(--ink-soft);margin-bottom:14px;">Add a profile photo so other participants can see you.</p>
+    <div id="currentPhotoPreview"></div>
+    <input type="file" id="photoFileInput" accept="image/*" style="display:none;" onchange="handlePhotoSelected(event)">
+    <div id="photoUploadBtns">
+      <button class="btn btn-primary" onclick="document.getElementById('photoFileInput').click()" style="margin-bottom:8px;">Choose Photo</button>
+      <br><button class="btn btn-outline" onclick="closePhotoUpload()">Skip for now</button>
+    </div>
+  </div>
+</div>
+
+<!-- Crop Overlay -->
+<div class="crop-overlay" id="cropOverlay">
+  <p style="color:#fff;font-size:.9rem;margin-bottom:10px;">Position your face in the circle</p>
+  <canvas id="cropCanvas" class="crop-canvas" width="200" height="200"></canvas>
+  <input type="range" id="cropZoom" min="0.5" max="3" step="0.05" value="1" style="width:200px;margin-top:10px;" oninput="drawCrop()">
+  <div class="crop-actions">
+    <button class="btn btn-primary" onclick="finishCrop()">Use This Photo</button>
+    <button class="btn btn-outline" style="color:#fff;border-color:#fff;" onclick="cancelCrop()">Cancel</button>
   </div>
 </div>
 
@@ -401,15 +446,15 @@ async function doLogin() {
     renderOptions();
 
     // Check T&C
+    showScreen('screenMain'); switchTab('selections');
+    renderUserPhoto();
     if (!currentUser.tcAccepted) {
-      showScreen('screenMain'); switchTab('selections');
       document.getElementById('tcModal').classList.add('show');
-    } else {
-      showScreen('screenMain'); switchTab('selections');
-      // Show match reminder if there are unshared matches
-      if (cachedMatches.length && cachedMatches.some(m => !m.iAgreed)) {
-        showMatchReminder(cachedMatches);
-      }
+    } else if (!currentUser.hasPhoto) {
+      // Prompt to add photo
+      openPhotoUpload();
+    } else if (cachedMatches.length && cachedMatches.some(m => !m.iAgreed)) {
+      showMatchReminder(cachedMatches);
     }
   } catch(err){showMsg('loginError','Connection error.','error');}
   btn.textContent='Sign In';btn.disabled=false;
@@ -422,10 +467,153 @@ async function acceptTC() {
     await apiCall({action:'acceptTC',id:currentUser.id});
     currentUser.tcAccepted = true;
     document.getElementById('tcModal').classList.remove('show');
+    // Prompt for photo after T&C
+    if (!currentUser.hasPhoto) {
+      openPhotoUpload();
+    } else if (cachedMatches.length && cachedMatches.some(m => !m.iAgreed)) {
+      showMatchReminder(cachedMatches);
+    }
   } catch(e) {
     document.getElementById('tcModal').classList.remove('show');
   }
   btn.textContent='I Accept';btn.disabled=false;
+}
+
+// --- Photo ---
+let cropImg = null, cropOffX = 0, cropOffY = 0, cropDragging = false, cropStartX = 0, cropStartY = 0;
+const photoCache = {};
+
+function renderUserPhoto() {
+  const wrap = document.getElementById('userPhotoWrap');
+  if (currentUser.hasPhoto) {
+    // Load own photo
+    apiCall({action:'getPhoto', targetId:currentUser.id}).then(res => {
+      if (res.success && res.photo) {
+        wrap.innerHTML = '<img src="' + res.photo + '" class="photo-circle-sm" onclick="openPhotoUpload()" style="cursor:pointer;" title="Change photo">';
+        photoCache[currentUser.id] = res.photo;
+      }
+    });
+  } else {
+    wrap.innerHTML = '<div class="photo-placeholder-sm" onclick="openPhotoUpload()" style="cursor:pointer;" title="Add photo">📷</div>';
+  }
+}
+
+function openPhotoUpload() {
+  const preview = document.getElementById('currentPhotoPreview');
+  if (currentUser.hasPhoto && photoCache[currentUser.id]) {
+    preview.innerHTML = '<img src="' + photoCache[currentUser.id] + '" class="photo-circle" style="margin-bottom:10px;"><br><button class="btn btn-sm btn-rose" onclick="doDeletePhoto()" style="margin-bottom:10px;">Delete Photo</button><br>';
+  } else {
+    preview.innerHTML = '<div class="photo-placeholder" style="margin-bottom:10px;">📷</div>';
+  }
+  document.getElementById('photoUploadBtns').innerHTML = '<button class="btn btn-primary" onclick="document.getElementById(\'photoFileInput\').click()" style="margin-bottom:8px;">' + (currentUser.hasPhoto ? 'Change Photo' : 'Choose Photo') + '</button><br><button class="btn btn-outline" onclick="closePhotoUpload()">Close</button>';
+  document.getElementById('photoUploadPopup').classList.add('show');
+}
+
+function closePhotoUpload() {
+  document.getElementById('photoUploadPopup').classList.remove('show');
+  // Show match reminder if applicable
+  if (cachedMatches && cachedMatches.length && cachedMatches.some(m => !m.iAgreed)) {
+    showMatchReminder(cachedMatches);
+  }
+}
+
+function handlePhotoSelected(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    cropImg = new Image();
+    cropImg.onload = function() {
+      cropOffX = 0; cropOffY = 0;
+      document.getElementById('cropZoom').value = 1;
+      document.getElementById('cropOverlay').classList.add('show');
+      setupCropDrag();
+      drawCrop();
+    };
+    cropImg.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+  e.target.value = '';
+}
+
+function setupCropDrag() {
+  const canvas = document.getElementById('cropCanvas');
+  canvas.onmousedown = canvas.ontouchstart = function(e) {
+    e.preventDefault(); cropDragging = true;
+    const pt = e.touches ? e.touches[0] : e;
+    cropStartX = pt.clientX - cropOffX; cropStartY = pt.clientY - cropOffY;
+  };
+  document.onmousemove = document.ontouchmove = function(e) {
+    if (!cropDragging) return; e.preventDefault();
+    const pt = e.touches ? e.touches[0] : e;
+    cropOffX = pt.clientX - cropStartX; cropOffY = pt.clientY - cropStartY;
+    drawCrop();
+  };
+  document.onmouseup = document.ontouchend = function() { cropDragging = false; };
+}
+
+function drawCrop() {
+  if (!cropImg) return;
+  const canvas = document.getElementById('cropCanvas');
+  const ctx = canvas.getContext('2d');
+  const size = 200;
+  const zoom = parseFloat(document.getElementById('cropZoom').value);
+  ctx.clearRect(0, 0, size, size);
+  ctx.save();
+  ctx.beginPath(); ctx.arc(size/2, size/2, size/2, 0, Math.PI*2); ctx.clip();
+  const scale = Math.max(size / cropImg.width, size / cropImg.height) * zoom;
+  const w = cropImg.width * scale, h = cropImg.height * scale;
+  const x = (size - w) / 2 + cropOffX, y = (size - h) / 2 + cropOffY;
+  ctx.drawImage(cropImg, x, y, w, h);
+  ctx.restore();
+}
+
+async function finishCrop() {
+  const canvas = document.getElementById('cropCanvas');
+  // Resize to 128x128
+  const outCanvas = document.createElement('canvas');
+  outCanvas.width = 128; outCanvas.height = 128;
+  const outCtx = outCanvas.getContext('2d');
+  outCtx.drawImage(canvas, 0, 0, 200, 200, 0, 0, 128, 128);
+  const dataUrl = outCanvas.toDataURL('image/jpeg', 0.8);
+  document.getElementById('cropOverlay').classList.remove('show');
+  // Upload
+  try {
+    const res = await apiCall({action:'uploadPhoto', id:currentUser.id, photo:dataUrl});
+    if (res.success) {
+      currentUser.hasPhoto = true;
+      photoCache[currentUser.id] = dataUrl;
+      renderUserPhoto();
+      closePhotoUpload();
+    }
+  } catch(e) { console.error('Photo upload failed:', e); }
+}
+
+function cancelCrop() {
+  document.getElementById('cropOverlay').classList.remove('show');
+  cropImg = null;
+}
+
+async function doDeletePhoto() {
+  try {
+    const res = await apiCall({action:'deletePhoto', id:currentUser.id});
+    if (res.success) {
+      currentUser.hasPhoto = false;
+      delete photoCache[currentUser.id];
+      renderUserPhoto();
+      closePhotoUpload();
+    }
+  } catch(e) { console.error('Delete failed:', e); }
+}
+
+// Lazy load photo for profile popup
+async function loadProfilePhoto(id) {
+  if (photoCache[id] !== undefined) return photoCache[id];
+  try {
+    const res = await apiCall({action:'getPhoto', targetId:id});
+    photoCache[id] = (res.success && res.photo) ? res.photo : '';
+    return photoCache[id];
+  } catch(e) { return ''; }
 }
 
 // --- Match Reminder Popup ---
@@ -485,6 +673,18 @@ function closeMatchReminder() {
 function showProfile(id, showSelectBtn) {
   const opt = options.find(o => o.id === id);
   if (!opt) return;
+
+  // Show placeholder while loading photo
+  const photoWrap = document.getElementById('profilePhotoWrap');
+  if (photoCache[id]) {
+    photoWrap.innerHTML = '<img src="' + photoCache[id] + '" class="photo-circle">';
+  } else {
+    photoWrap.innerHTML = '<div class="photo-placeholder">👤</div>';
+    loadProfilePhoto(id).then(photo => {
+      if (photo) photoWrap.innerHTML = '<img src="' + photo + '" class="photo-circle">';
+    });
+  }
+
   document.getElementById('profileTitle').textContent = opt.id + ' — ' + opt.name;
   document.getElementById('profileAge').textContent = opt.age || '—';
   document.getElementById('profileEthnicity').textContent = opt.ethnicity || '—';
