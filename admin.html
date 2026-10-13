@@ -276,6 +276,30 @@ tr.absent td{background:#ffecef;color:var(--rose);}
   </div>
 </div>
 
+<!-- Edit Participant Popup -->
+<div id="editOverlay" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:100;align-items:center;justify-content:center;" onclick="if(event.target===this)closeEdit()">
+  <div style="background:var(--white);border-radius:12px;padding:24px 20px;max-width:420px;width:90%;max-height:85vh;overflow-y:auto;">
+    <h2 style="font-size:16px;margin-bottom:12px;">Edit <span id="editId"></span></h2>
+    <div class="inline-fields">
+      <div class="field"><label>Name</label><input type="text" id="editName"></div>
+      <div class="field"><label>Phone</label><input type="text" id="editPhone"></div>
+    </div>
+    <div class="inline-fields">
+      <div class="field"><label>Email</label><input type="text" id="editEmail"></div>
+      <div class="field"><label>Age</label><input type="number" id="editAge"></div>
+    </div>
+    <div class="inline-fields">
+      <div class="field"><label>Ethnicity</label><input type="text" id="editEthnicity"></div>
+      <div class="field"><label>Nationality</label><input type="text" id="editNationality"></div>
+    </div>
+    <div class="field"><label>Occupation</label><input type="text" id="editOccupation"></div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn btn-gold" onclick="doSaveEdit()">Save Changes</button>
+      <button class="btn btn-outline" onclick="closeEdit()">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -590,7 +614,9 @@ async function doSearch() {
     else html += '<span style="color:var(--ink-soft);font-size:11px;">(nobody)</span>'; html += '</div>';
     html += '<h3>Matches (' + (p.matches ? p.matches.length : 0) + ')</h3><div>';
     if (p.matches && p.matches.length) { for (const m of p.matches) html += makeTooltipTag(m.id, pMap, m.id + (m.revealed ? ' ✓REVEALED' : m.partial ? ' ⏳partial' : '')); }
-    else html += '<span style="color:var(--ink-soft);font-size:11px;">(none)</span>'; html += '</div></div>';
+    else html += '<span style="color:var(--ink-soft);font-size:11px;">(none)</span>'; html += '</div>';
+    html += '<div style="margin-top:12px;padding-top:12px;border-top:1px solid #ddd;"><button class="btn btn-sm btn-gold" onclick="openEditParticipant(\'' + p.participant_id + '\')">Edit Details</button></div>';
+    html += '</div>';
   }
   document.getElementById('searchResults').innerHTML = html;
 }
@@ -629,6 +655,37 @@ async function doAddLateComer() {
     allParticipants = []; loadQuickStats();
   } else toast('Error: ' + res.error);
 }
+let editingId = '';
+function openEditParticipant(id) {
+  const p = allParticipants.find(p => p.participant_id.toUpperCase() === id.toUpperCase());
+  if (!p) { toast('Participant not found. Load participants first.'); return; }
+  editingId = p.participant_id;
+  document.getElementById('editId').textContent = p.participant_id;
+  document.getElementById('editName').value = p.name || '';
+  document.getElementById('editPhone').value = p.phone || '';
+  document.getElementById('editEmail').value = p.email || '';
+  document.getElementById('editAge').value = p.age || '';
+  document.getElementById('editEthnicity').value = p.ethnicity || '';
+  document.getElementById('editNationality').value = p.nationality || '';
+  document.getElementById('editOccupation').value = p.occupation || '';
+  document.getElementById('editOverlay').style.display = 'flex';
+}
+function closeEdit() { document.getElementById('editOverlay').style.display = 'none'; editingId = ''; }
+async function doSaveEdit() {
+  if (!editingId) return;
+  const res = await api({ action: 'admin_updateParticipant', id: editingId,
+    name: document.getElementById('editName').value.trim(),
+    phone: document.getElementById('editPhone').value.trim(),
+    email: document.getElementById('editEmail').value.trim(),
+    age: document.getElementById('editAge').value.trim(),
+    ethnicity: document.getElementById('editEthnicity').value.trim(),
+    nationality: document.getElementById('editNationality').value.trim(),
+    occupation: document.getElementById('editOccupation').value.trim()
+  });
+  if (res.success) { toast(editingId + ' updated!'); closeEdit(); allParticipants = []; loadParticipantsList(); }
+  else toast('Error: ' + res.error);
+}
+
 async function doRegenAllPasswords() {
   if (!confirm('Regenerate ALL passwords?\n\nThis replaces every password. Any printed labels will have old passwords that no longer work.')) return;
   const res = await api({ action: 'admin_regenAllPasswords' });
