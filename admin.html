@@ -779,7 +779,7 @@ async function doPrint(type) {
   const siteUrl = 'https://darconnecx-code.github.io/newdarmatch/?event=' + currentEventId;
   let html = '';
   const qrSize = 150;
-  const labelStyle = 'width:48mm;padding:3mm 0mm;text-align:center;border:1px dashed #ccc;margin:0 auto;page-break-after:always;overflow:hidden;word-wrap:break-word;';
+  const labelStyle = 'width:45mm;padding:3mm 2mm;text-align:center;border:1px dashed #ccc;margin:0 auto;page-break-after:always;overflow:hidden;word-wrap:break-word;';
   if (type === 'qr') {
     labels.forEach((l, i) => {
       html += '<div style="' + labelStyle + '">';
