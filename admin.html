@@ -779,7 +779,7 @@ async function doPrint(type) {
   const siteUrl = 'https://darconnecx-code.github.io/newdarmatch/?event=' + currentEventId;
   let html = '';
   const qrSize = 150;
-  const labelStyle = 'width:56mm;padding:2mm 1mm 2mm 3mm;text-align:center;box-sizing:border-box;page-break-after:always;overflow:hidden;word-wrap:break-word;margin:0 auto 0 -4mm;';  
+  const labelStyle = 'width:56mm;padding:2mm 1mm;text-align:center;box-sizing:border-box;page-break-after:always;overflow:hidden;word-wrap:break-word;margin-left:0mm;';
   if (type === 'qr') {
     labels.forEach((l, i) => {
       html += '<div style="' + labelStyle + '">';
@@ -814,7 +814,7 @@ async function doPrint(type) {
       html += '</div>';
     });
   }
-  document.getElementById('printPreview').innerHTML = '<button class="btn btn-gold" onclick="window.print()" style="margin-bottom:10px;">Print</button><style>@media print{@page{size:58mm auto;margin:2mm 1mm;}body{margin:0;padding:0;}.label,.name-label{page-break-after:always;}}</style>' + html;  if (type === 'qr' || type === 'nameqr') { labels.forEach((l, i) => { const el = document.getElementById('qr' + i); if (el) new QRCode(el, { text: siteUrl, width: qrSize, height: qrSize, colorDark: '#000', colorLight: '#fff', correctLevel: QRCode.CorrectLevel.M }); }); }
+  document.getElementById('printPreview').innerHTML = '<button class="btn btn-gold" onclick="window.print()" style="margin-bottom:10px;">Print</button><style>@media print{@page{size:58mm auto;margin:0;}body{margin:0;padding:0;}.label,.name-label{page-break-after:always;}}</style>' + html;  if (type === 'qr' || type === 'nameqr') { labels.forEach((l, i) => { const el = document.getElementById('qr' + i); if (el) new QRCode(el, { text: siteUrl, width: qrSize, height: qrSize, colorDark: '#000', colorLight: '#fff', correctLevel: QRCode.CorrectLevel.M }); }); }
 }
 </script>
 </body>
