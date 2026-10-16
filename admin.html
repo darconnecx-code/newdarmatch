@@ -793,7 +793,7 @@ async function doPrint(type) {
   } else if (type === 'name') {
     labels.forEach(l => {
       const fn = l.name.split(' ')[0];
-      html += '<div style="' + labelStyle + 'margin-left:-4mm;">';
+      html += '<div style="' + labelStyle + 'margin-left:-8mm;">';
       html += '<div style="font-size:14pt;font-weight:bold;">' + l.id + ' - ' + fn + '</div>';
       if (l.age) html += '<div style="font-size:10pt;font-weight:bold;margin-top:1mm;">Age: ' + l.age + '</div>';
       html += '</div>';
