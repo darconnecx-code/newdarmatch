@@ -785,9 +785,9 @@ async function doPrint(type) {
       html += '<div style="' + labelStyle + '">';
       html += '<div style="font-size:9pt;font-weight:bold;margin-bottom:1mm;">DarMatch</div>';
       html += '<div id="qr' + i + '" style="margin:2mm auto;"></div>';
-      html += '<div style="font-size:13pt;font-weight:bold;margin-top:1mm;">' + l.id + '</div>';
-      html += '<div style="font-size:10pt;font-weight:bold;display:table;margin:0 auto;max-width:100%;">' + l.name + '</div>';
-      html += '<div style="font-size:11pt;font-weight:bold;margin-top:1mm;">Pass: <span style="font-family:monospace;letter-spacing:1px;">' + l.password + '</span></div>';
+      html += '<div style="font-size:13pt;font-weight:bold;margin-top:1mm;margin-left:-6mm;">' + l.id + '</div>';
+      html += '<div style="font-size:10pt;font-weight:bold;width:100%;margin-left:-6mm;">' + l.name + '</div>';
+      html += '<div style="font-size:11pt;font-weight:bold;margin-top:1mm;margin-left:-6mm;">Pass: <span style="font-family:monospace;letter-spacing:1px;">' + l.password + '</span></div>';
       html += '</div>';
     });
   } else if (type === 'name') {
@@ -801,16 +801,16 @@ async function doPrint(type) {
   } else {
     labels.forEach((l, i) => {
       const fn = l.name.split(' ')[0];
-      html += '<div style="' + labelStyle + 'margin-left:-4mm;">';
+      html += '<div style="' + labelStyle + 'margin-left:-8mm;">';
       html += '<div style="font-size:14pt;font-weight:bold;">' + l.id + ' - ' + fn + '</div>';
       if (l.age) html += '<div style="font-size:10pt;font-weight:bold;margin-top:1mm;">Age: ' + l.age + '</div>';
       html += '</div>';
       html += '<div style="' + labelStyle + '">';
       html += '<div style="font-size:9pt;font-weight:bold;margin-bottom:1mm;">DarMatch</div>';
       html += '<div id="qr' + i + '" style="margin:2mm auto;"></div>';
-      html += '<div style="font-size:13pt;font-weight:bold;margin-top:1mm;">' + l.id + '</div>';
-      html += '<div style="font-size:10pt;font-weight:bold;">' + l.name + '</div>';
-      html += '<div style="font-size:11pt;font-weight:bold;margin-top:1mm;">Pass: <span style="font-family:monospace;letter-spacing:1px;">' + l.password + '</span></div>';
+      html += '<div style="font-size:13pt;font-weight:bold;margin-top:1mm;margin-left:-6mm;">' + l.id + '</div>';
+      html += '<div style="font-size:10pt;font-weight:bold;margin-left:-6mm;">' + l.name + '</div>';
+      html += '<div style="font-size:11pt;font-weight:bold;margin-top:1mm;margin-left:-6mm;">Pass: <span style="font-family:monospace;letter-spacing:1px;">' + l.password + '</span></div>';
       html += '</div>';
     });
   }
