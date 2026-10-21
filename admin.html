@@ -75,6 +75,9 @@ tr.absent td{background:#ffecef;color:var(--rose);}
 @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
 @media print{.top-bar,.tab-bar,.grid,.btn,.event-controls,.no-print,.section h2,.section .field,.section p,label{display:none!important;}.section{border:none;box-shadow:none;padding:0;}}
 @media(max-width:600px){.inline-fields{grid-template-columns:1fr;}.stat-card{min-width:70px;}.stat-card .num{font-size:18px;}}
+.photo-modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.75);z-index:400;align-items:center;justify-content:center;cursor:pointer;}
+.photo-modal.show{display:flex;}
+.photo-modal img{max-width:90vw;max-height:90vh;border-radius:12px;box-shadow:0 8px 40px rgba(0,0,0,.5);cursor:default;}
 </style>
 </head>
 <body>
@@ -301,6 +304,11 @@ tr.absent td{background:#ffecef;color:var(--rose);}
 </div>
 
 <div class="toast" id="toast"></div>
+
+<!-- Photo Modal -->
+<div class="photo-modal" id="photoModal" onclick="if(event.target===this)closePhotoModal()">
+  <img id="photoModalImg" src="" alt="">
+</div>
 
 <script>
 const API_URL = 'https://darmatch-api.darmatch.workers.dev';
@@ -818,6 +826,17 @@ async function doPrint(type) {
   }
   document.getElementById('printPreview').innerHTML = '<button class="btn btn-gold" onclick="window.print()" style="margin-bottom:10px;">Print</button><style>@media print{@page{size:58mm auto;margin:0;}body{margin:0;padding:0;}.label,.name-label{page-break-after:always;}}</style>' + html;  if (type === 'qr' || type === 'nameqr') { labels.forEach((l, i) => { const el = document.getElementById('qr' + i); if (el) new QRCode(el, { text: siteUrl, width: qrSize, height: qrSize, colorDark: '#000', colorLight: '#fff', correctLevel: QRCode.CorrectLevel.M }); }); }
 }
+// === PHOTO MODAL ===
+function openPhotoModal(dataUrl) {
+  if (!dataUrl) return;
+  document.getElementById('photoModalImg').src = dataUrl;
+  document.getElementById('photoModal').classList.add('show');
+}
+function closePhotoModal() {
+  document.getElementById('photoModal').classList.remove('show');
+  document.getElementById('photoModalImg').src = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closePhotoModal(); });
 </script>
 </body>
 </html>
