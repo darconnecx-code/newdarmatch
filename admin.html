@@ -720,6 +720,10 @@ async function doRegenPassword() {
 async function loadStats() {
   const res = await api({ action: 'admin_getStats' }); if (!res.success) return;
   const s = res.stats;
+  if (!allParticipants.length) { const r = await api({ action: 'admin_getParticipants' }); if (r.success) allParticipants = r.participants; }
+  const activeList = allParticipants.filter(p => p.status !== 'absent');
+  const withPhoto = activeList.filter(p => p.photo && p.photo.trim()).length;
+  const photoStats = { withPhoto, active: activeList.length, pct: activeList.length > 0 ? Math.round(withPhoto / activeList.length * 100) : 0 };
   let html = '<div class="stat-row">' +
     '<div class="stat-card"><div class="num">' + s.totalRegistered + '</div><div class="lbl">Total</div></div>' +
     '<div class="stat-card"><div class="num">' + s.totalActive + '</div><div class="lbl">Active</div></div>' +
@@ -729,7 +733,8 @@ async function loadStats() {
     '<div class="stat-card"><div class="num">' + s.matchCount + '</div><div class="lbl">Matches</div></div>' +
     '<div class="stat-card"><div class="num">' + s.matchPct + '%</div><div class="lbl">Matched (' + s.matchedCount + '/' + s.totalActive + ')</div></div>' +
     '<div class="stat-card"><div class="num">' + s.revealPct + '%</div><div class="lbl">Revealed (' + s.fullReveals + '/' + s.matchCount + ')</div></div>' +
-    '<div class="stat-card"><div class="num">' + s.exchangedPct + '%</div><div class="lbl">Exchanged (' + s.uniqueRevealCount + '/' + s.totalActive + ')</div></div></div>';
+    '<div class="stat-card"><div class="num">' + s.exchangedPct + '%</div><div class="lbl">Exchanged (' + s.uniqueRevealCount + '/' + s.totalActive + ')</div></div>' +
+    '<div class="stat-card"><div class="num">' + (photoStats.pct) + '%</div><div class="lbl">Photos ' + photoStats.withPhoto + '/' + photoStats.active + '</div></div></div>';
   html += '<div style="display:flex;gap:14px;flex-wrap:wrap;">';
   html += '<div style="flex:1;min-width:180px;"><h3>Most Selected Males</h3>';
   for (let i = 0; i < Math.min(s.topMales.length, 10); i++) { const t = s.topMales[i]; html += '<div style="font-size:12px;padding:3px 0;border-bottom:1px solid #eee;"><b>' + (i + 1) + '.</b> ' + t.id + ' ' + t.name.split(' ')[0] + ' <b>' + t.count + '</b></div>'; }
