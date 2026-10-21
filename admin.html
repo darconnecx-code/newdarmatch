@@ -493,11 +493,13 @@ async function loadParticipantsList() {
   const res = await api({ action: 'admin_getParticipants' }); if (!res.success) return;
   allParticipants = res.participants;
   if (!allParticipants.length) { document.getElementById('participantsList').innerHTML = '<p style="color:var(--ink-soft);">No participants. Upload an Excel file.</p>'; return; }
-  let html = '<table><tr><th>ID</th><th>Name</th><th>Phone</th><th>Age</th><th>Ethnicity</th><th>Status</th><th>Sel</th><th>Pass</th></tr>';
+  let html = '<table><tr><th>ID</th><th>Photo</th><th>Name</th><th>Phone</th><th>Age</th><th>Ethnicity</th><th>Status</th><th>Sel</th><th>Pass</th><th>T&C</th></tr>';
   for (const p of allParticipants) {
     const cls = p.status === 'absent' ? ' class="absent"' : '';
     const selCount = p.selections ? p.selections.split(',').filter(s => s.trim()).length : 0;
-    html += '<tr' + cls + '><td><b>' + p.participant_id + '</b></td><td>' + p.name + '</td><td>' + (p.phone || '') + '</td><td>' + (p.age || '') + '</td><td>' + (p.ethnicity || '') + '</td><td>' + (p.status || 'active') + '</td><td>' + (selCount || '-') + '</td><td>' + p.password + '</td></tr>';
+    const photoCell = (p.photo && p.photo.trim()) ? '<img src="' + p.photo + '" style="width:32px;height:32px;border-radius:50%;object-fit:cover;cursor:pointer;" onclick="openPhotoModal(\'' + p.photo + '\')">' : '<span style="color:#aaa;">—</span>';
+    const tcCell = p.tc_accepted ? 'Yes' : 'No';
+    html += '<tr' + cls + '><td><b>' + p.participant_id + '</b></td><td>' + photoCell + '</td><td>' + p.name + '</td><td>' + (p.phone || '') + '</td><td>' + (p.age || '') + '</td><td>' + (p.ethnicity || '') + '</td><td>' + (p.status || 'active') + '</td><td>' + (selCount || '-') + '</td><td>' + p.password + '</td><td>' + tcCell + '</td></tr>';
   }
   html += '</table>';
   document.getElementById('participantsList').innerHTML = html;
