@@ -227,6 +227,11 @@ tr.absent td{background:#ffecef;color:var(--rose);}
       <button class="btn btn-sm btn-gold" onclick="loadReveals()">Load Reveals</button>
       <div id="revealsContent" style="margin-top:10px;"></div>
     </div>
+    <div class="section">
+      <h2>T&C Not Accepted</h2>
+      <button class="btn btn-sm btn-gold" onclick="loadTCNotAccepted()" style="margin-bottom:10px;">Load List</button>
+      <div id="tcNotAcceptedContent"></div>
+    </div>
   </div>
 
   <!-- PRINT -->
@@ -756,6 +761,15 @@ async function loadReveals() {
   for (const r of res.reveals) html += '<tr><td>' + r.personA + '</td><td>' + r.personB + '</td><td>' + (r.full ? '✓ BOTH' : 'Partial: ' + r.agreedBy.join(', ')) + '</td></tr>';
   html += '</table>';
   document.getElementById('revealsContent').innerHTML = html;
+}
+
+async function loadTCNotAccepted() {
+  if (!allParticipants.length) { const r = await api({ action: 'admin_getParticipants' }); if (r.success) allParticipants = r.participants; }
+  const notAccepted = allParticipants.filter(p => !p.tc_accepted);
+  const content = document.getElementById('tcNotAcceptedContent');
+  if (!notAccepted.length) { content.innerHTML = '<p style="color:var(--green);">✓ All participants have accepted T&C.</p>'; return; }
+  const lines = notAccepted.map(p => '<div style="padding:6px 0;border-bottom:1px solid #eee;font-size:13px;"><b>' + p.participant_id + '</b> — ' + p.name + (p.status === 'absent' ? ' <span style="color:var(--rose);font-size:11px;">(absent)</span>' : '') + '</div>');
+  content.innerHTML = '<p style="margin-bottom:10px;font-size:13px;color:var(--ink-soft);"><b>' + notAccepted.length + '</b> participant(s) have not accepted T&C:</p>' + lines.join('');
 }
 
 // === SETTINGS ===
