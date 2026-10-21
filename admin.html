@@ -606,7 +606,10 @@ async function doSearch() {
   const pMap = {}; for (const p of allParticipants) pMap[p.participant_id.toUpperCase()] = p;
   let html = '';
   for (const p of res.results) {
-    html += '<div class="search-result"><h3>' + p.participant_id + ' — ' + p.name + '</h3>';
+    const searchPhoto = (p.photo && p.photo.trim())
+      ? '<img src="' + p.photo + '" style="width:64px;height:64px;border-radius:50%;object-fit:cover;cursor:pointer;float:left;margin-right:12px;" onclick="openPhotoModal(\'' + p.photo + '\')">'
+      : '<div style="width:64px;height:64px;border-radius:50%;background:#e0e0e0;display:flex;align-items:center;justify-content:center;font-size:24px;color:#999;float:left;margin-right:12px;">📷</div>';
+    html += '<div class="search-result">' + searchPhoto + '<h3>' + p.participant_id + ' — ' + p.name + '</h3>';
     html += '<div class="search-row"><span class="search-lbl">Age</span><span class="search-val">' + (p.age || '-') + '</span></div>';
     html += '<div class="search-row"><span class="search-lbl">Phone</span><span class="search-val">' + (p.phone || '-') + '</span></div>';
     html += '<div class="search-row"><span class="search-lbl">Email</span><span class="search-val">' + (p.email || '-') + '</span></div>';
